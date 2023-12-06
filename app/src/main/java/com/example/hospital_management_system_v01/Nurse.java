@@ -5,7 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 public class Nurse extends AppCompatActivity {
-
+//zkkj
+    int a = 20;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
