@@ -10,5 +10,10 @@ public class Nurse extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nurse);
+
+        // View and edit only no adding, increase stock But don't add a new medicine.
+        // Assigns appointments
+        // prescribe the patient with the medicine from the doctor.
+
     }
 }

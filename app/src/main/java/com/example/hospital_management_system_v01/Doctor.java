@@ -10,5 +10,12 @@ public class Doctor extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor);
+
+        // BLANK
+
+        // View appointments
+        // change patient status ie case severe or cured
+        // Message the nurse with the prescription using intents.
+
     }
 }
