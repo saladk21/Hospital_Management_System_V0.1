@@ -44,6 +44,7 @@ public class Database extends SQLiteOpenHelper {
     // Admin table
     public static final String ADMIN_TABLE_NAME = "Admin";
     public static final String ADMIN_COLUMN_USERNAME = "username";
+    public static final String ADMIN_COLUMN_ID = "_id";
 
     // Audit Trail table
     public static final String AUDIT_TRAIL_TABLE_NAME = "AuditTrail";
@@ -100,8 +101,10 @@ public class Database extends SQLiteOpenHelper {
 
         // Create Admin table
         createTable(db, ADMIN_TABLE_NAME,
-                ADMIN_COLUMN_USERNAME + " TEXT PRIMARY KEY, " +
+                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        COLUMN_NAME + " TEXT, " +
                         COLUMN_PASSWORD + " TEXT");
+
 
         // Create Audit Trail table
         createTable(db, AUDIT_TRAIL_TABLE_NAME,
@@ -180,11 +183,13 @@ public class Database extends SQLiteOpenHelper {
     }
 
     // Universal method to update a record in any table
-    public int updateRecord(String tableName, long recordId, ContentValues values) {
+    public int updateRecord(String tableName, long itemId, ContentValues values) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String idColumn = getTableIdColumn(tableName);
-        return db.update(tableName, values, idColumn + " = " + recordId, null);
+        String selection = COLUMN_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(itemId)};
+        return db.update(tableName, values, selection, selectionArgs);
     }
+
 
     // Universal method to delete a record from any table
     public int deleteRecord(String tableName, long recordId) {
@@ -205,7 +210,7 @@ public class Database extends SQLiteOpenHelper {
             case MEDICINE_TABLE_NAME:
                 return MEDICINE_COLUMN_ID;
             case ADMIN_TABLE_NAME:
-                return ADMIN_COLUMN_USERNAME;
+                return ADMIN_COLUMN_ID;
             default:
                 return COLUMN_ID;
         }

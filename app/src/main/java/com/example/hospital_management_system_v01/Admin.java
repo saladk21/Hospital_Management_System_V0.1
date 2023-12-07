@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -204,8 +205,7 @@ public class Admin extends AppCompatActivity {
             case Database.MEDICINE_TABLE_NAME:
                 return R.layout.layout_medicine_fields;
             default:
-                // Return a default layout or handle the case as needed
-                return R.layout.layout_admin_fields;
+                return -1; // Return an invalid layout ID or handle accordingly
         }
     }
 
@@ -229,6 +229,7 @@ public class Admin extends AppCompatActivity {
             case Database.ADMIN_TABLE_NAME:
                 String adminName = ((EditText) dialogView.findViewById(R.id.editTextAdminName)).getText().toString();
                 String adminPassword = ((EditText) dialogView.findViewById(R.id.editTextAdminPassword)).getText().toString();
+
                 values.put(Database.COLUMN_NAME, adminName);
                 values.put(Database.COLUMN_PASSWORD, adminPassword);
                 break;
@@ -236,6 +237,7 @@ public class Admin extends AppCompatActivity {
                 String doctorName = ((EditText) dialogView.findViewById(R.id.editTextDoctorName)).getText().toString();
                 String doctorSpecialty = ((EditText) dialogView.findViewById(R.id.editTextSpecialization)).getText().toString();
                 String doctorPass = ((EditText) dialogView.findViewById(R.id.editTextPassword)).getText().toString();
+
                 values.put(Database.COLUMN_NAME, doctorName);
                 values.put(Database.COLUMN_PASSWORD, doctorPass);
                 values.put(Database.DOCTOR_COLUMN_SPECIALTY, doctorSpecialty);
@@ -244,63 +246,99 @@ public class Admin extends AppCompatActivity {
                 String nurseName = ((EditText) dialogView.findViewById(R.id.editTextNurseName)).getText().toString();
                 String nurseDepartment = ((EditText) dialogView.findViewById(R.id.editTextDepartment)).getText().toString();
                 String nursePass = ((EditText) dialogView.findViewById(R.id.editTextPassword)).getText().toString();
+
                 values.put(Database.COLUMN_NAME, nurseName);
                 values.put(Database.NURSE_COLUMN_DEPARTMENT, nurseDepartment);
                 values.put(Database.COLUMN_PASSWORD, nursePass);
                 break;
             case Database.PATIENT_TABLE_NAME:
-                int patientAge = Integer.parseInt(((EditText) dialogView.findViewById(R.id.editTextAge)).getText().toString());
+                EditText ageEditText = dialogView.findViewById(R.id.editTextAge);
+                String ageString = ageEditText.getText().toString().trim();
+
+                // Check if the age string is not empty before parsing
+                if (!ageString.isEmpty()) {
+                    int patientAge = Integer.parseInt(ageString);
+                    values.put(Database.PATIENT_COLUMN_AGE, patientAge);
+                } else {
+                    // Handle the case where age is empty, e.g., show an error or set a default value
+                    // For now, let's assume a default age of 0
+                    values.put(Database.PATIENT_COLUMN_AGE, 0);
+                }
+
                 String patientGender = ((EditText) dialogView.findViewById(R.id.editTextGender)).getText().toString();
-                String patientname = ((EditText) dialogView.findViewById(R.id.editTextPatientName)).getText().toString();
-                String patientpass = ((EditText) dialogView.findViewById(R.id.editTextPassword)).getText().toString();
+                String patientName = ((EditText) dialogView.findViewById(R.id.editTextPatientName)).getText().toString();
+                String patientPass = ((EditText) dialogView.findViewById(R.id.editTextPassword)).getText().toString();
                 String patientIll = ((EditText) dialogView.findViewById(R.id.editTextIllness)).getText().toString();
                 String patientStat = ((EditText) dialogView.findViewById(R.id.editTextSeverity)).getText().toString();
-                values.put(Database.PATIENT_COLUMN_AGE, patientAge);
+
                 values.put(Database.PATIENT_COLUMN_GENDER, patientGender);
-                values.put(Database.COLUMN_NAME, patientname);
-                values.put(Database.COLUMN_PASSWORD, patientpass);
+                values.put(Database.COLUMN_NAME, patientName);
+                values.put(Database.COLUMN_PASSWORD, patientPass);
                 values.put(Database.PATIENT_COLUMN_ILLNESS, patientIll);
                 values.put(Database.PATIENT_COLUMN_STATUS, patientStat);
+
                 break;
+
             case Database.MEDICINE_TABLE_NAME:
                 String medicineName = ((EditText) dialogView.findViewById(R.id.editTextMedicineName)).getText().toString();
                 String medicineEx = ((EditText) dialogView.findViewById(R.id.editTextExpiryDate)).getText().toString();
-                int medicineStock = Integer.parseInt(((EditText) dialogView.findViewById(R.id.editTextStockQuantity)).getText().toString());
-                values.put(Database.COLUMN_NAME, medicineStock);
+
+                // Check if the medicine stock quantity is not empty before parsing
+                EditText stockEditText = dialogView.findViewById(R.id.editTextStockQuantity);
+                String stockString = stockEditText.getText().toString().trim();
+
+                if (!stockString.isEmpty()) {
+                    int medicineStock = Integer.parseInt(stockString);
+                    values.put(Database.MEDICINE_COLUMN_STOCK, medicineStock);
+                } else {
+                    // Handle the case where stock quantity is empty, e.g., show an error or set a default value
+                    // For now, let's assume a default stock quantity of 0
+                    values.put(Database.MEDICINE_COLUMN_STOCK, 0);
+                }
+
+                values.put(Database.COLUMN_NAME, medicineName);
                 values.put(Database.MEDICINE_COLUMN_EXPIRY_DATE, medicineEx);
-                values.put(Database.MEDICINE_COLUMN_STOCK, medicineStock);
+
                 break;
             default:
                 // Handle unknown user types or provide a default behavior
                 break;
+
         }
 
         return values;
     }
 
     private void addSpecificUser(String userType) {
+        Log.d("AddSpecificUser", "Adding " + userType);
+
         // Inflate the corresponding layout based on the selected user type
         AlertDialog.Builder specificUserBuilder = new AlertDialog.Builder(this);
         specificUserBuilder.setTitle("Add " + userType);
 
-        View dialogView = getLayoutInflater().inflate(getLayoutId(userType), null);
-        specificUserBuilder.setView(dialogView);
+        // Inflate the layout for the specific user type
+        View userSpecificDialogView = getLayoutInflater().inflate(getLayoutId(userType), null);
+        specificUserBuilder.setView(userSpecificDialogView);
 
         specificUserBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Log.d("AddSpecificUser", "Save button clicked");
+
                 // Retrieve the entered information based on user type
-                ContentValues values = getUserTypeValues(dialogView, userType);
+                ContentValues values = getUserTypeValues(userSpecificDialogView, userType);
 
                 // Add the record to the database
-                long result = database.addRecord(userType, values);
+                try {
+                    long result = database.addRecord(userType, values);
+                    Log.d("AddSpecificUser", "Record added to the database. Result: " + result);
+                } catch (Exception e) {
+                    Log.e("AddSpecificUser", "Error adding record to the database", e);
+                    e.printStackTrace();
+                }
 
                 // Show a toast based on the result
-                if (result != -1) {
-                    Toast.makeText(Admin.this, "User added successfully", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(Admin.this, "Error adding user", Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(Admin.this, "User added successfully", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -313,6 +351,8 @@ public class Admin extends AppCompatActivity {
 
         specificUserBuilder.create().show();
     }
+
+
 
 
 
@@ -340,14 +380,10 @@ public class Admin extends AppCompatActivity {
                 // Get the selected user type from the Spinner
                 String selectedUserType = selectUserTypeSpinner.getSelectedItem().toString();
 
-                // Get the selected user ID
-                long userId = getUserId();
-
-                // Continue with the user type-specific logic (show edit dialog, etc.)
-                editSpecificUser(selectedUserType, userId);
+                // Show the list of existing items for the selected user type
+                showExistingItemsForEdit(selectedUserType);
             }
         });
-
 
         selectUserBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -360,6 +396,7 @@ public class Admin extends AppCompatActivity {
     }
 
 
+
     // Add this method for editing a specific user
     private void editSpecificUser(String userType, long itemId) {
         // Fetch the user details based on the user type and item ID
@@ -367,10 +404,17 @@ public class Admin extends AppCompatActivity {
 
         if (userCursor != null && userCursor.moveToFirst()) {
             // Inflate the dialog layout based on the user type
+            int layoutId = getLayoutId(userType);
+            if (layoutId == -1) {
+                // Handle invalid layout ID
+                Toast.makeText(Admin.this, "Invalid user type", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             AlertDialog.Builder editUserBuilder = new AlertDialog.Builder(this);
             editUserBuilder.setTitle("Edit " + userType);
 
-            View dialogView = getLayoutInflater().inflate(getLayoutId(userType), null);
+            View dialogView = getLayoutInflater().inflate(layoutId, null);
             editUserBuilder.setView(dialogView);
 
             // Retrieve the user details from the cursor and populate the dialog fields
@@ -411,6 +455,10 @@ public class Admin extends AppCompatActivity {
             Toast.makeText(Admin.this, "User details not found", Toast.LENGTH_SHORT).show();
         }
     }
+
+
+
+
 
     // Helper method to retrieve values from the cursor and populate the dialog fields
     @SuppressLint("Range")
@@ -468,6 +516,7 @@ public class Admin extends AppCompatActivity {
                 break;
         }
     }
+
 
 
 
@@ -564,71 +613,135 @@ public class Admin extends AppCompatActivity {
             case Database.MEDICINE_TABLE_NAME:
                 return Database.MEDICINE_COLUMN_ID;
             case Database.ADMIN_TABLE_NAME:
-                return Database.COLUMN_ID;
+                return Database.ADMIN_COLUMN_ID;
             default:
                 return Database.COLUMN_ID;
         }
     }
 
-
     private void deleteUser() {
-        long userId = getUserId(); // Get the user ID to delete
+        // Show a dialog to select the user type to delete
+        AlertDialog.Builder selectUserBuilder = new AlertDialog.Builder(this);
+        selectUserBuilder.setTitle("Select User Type");
 
-        if (userId != -1) {
-            String selectedUserType = userTypeSpinner.getSelectedItem().toString();
+        // Inflate the dialog layout
+        View selectUserDialogView = getLayoutInflater().inflate(R.layout.dialog_select_user, null);
+        selectUserBuilder.setView(selectUserDialogView);
 
-            int result = database.deleteRecord(selectedUserType, userId);
+        // Find the Spinner in the dialog layout
+        Spinner selectUserTypeSpinner = selectUserDialogView.findViewById(R.id.selectUserTypeSpinner);
 
-            if (result > 0) {
-                Toast.makeText(this, "User deleted successfully", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Error deleting user", Toast.LENGTH_SHORT).show();
+        // Populate the Spinner with user types
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, getUserTypes());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        selectUserTypeSpinner.setAdapter(adapter);
+
+        // Set up the buttons for selecting a user type
+        selectUserBuilder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Get the selected user type from the Spinner
+                String selectedUserType = selectUserTypeSpinner.getSelectedItem().toString();
+
+                // Show the list of existing items for the selected user type
+                showExistingItemsForDelete(selectedUserType);
             }
+        });
+
+        selectUserBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        selectUserBuilder.create().show();
+    }
+
+    // Add this method for deleting a specific user
+    private void deleteSpecificUser(String userType, long itemId) {
+        // Show a confirmation dialog before deleting the user
+        AlertDialog.Builder confirmDeleteBuilder = new AlertDialog.Builder(this);
+        confirmDeleteBuilder.setTitle("Confirm Deletion");
+        confirmDeleteBuilder.setMessage("Are you sure you want to delete this user?");
+
+        // Set up the buttons for confirming or canceling the deletion
+        confirmDeleteBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Delete the record from the database
+                int result = database.deleteRecord(userType, itemId);
+
+                // Show a toast based on the result
+                if (result > 0) {
+                    Toast.makeText(Admin.this, "User deleted successfully", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(Admin.this, "Error deleting user", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        confirmDeleteBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        confirmDeleteBuilder.create().show();
+    }
+
+    private void showExistingItemsForDelete(String userType) {
+        // Get a cursor containing existing items for the selected user type
+        Cursor existingItemsCursor = database.getAllRecords(userType);
+
+        // Check if there are existing items
+        if (existingItemsCursor != null && existingItemsCursor.getCount() > 0) {
+            // Create a list to store existing item names
+            List<String> existingItemsList = new ArrayList<>();
+
+            // Extract existing item names from the cursor
+            while (existingItemsCursor.moveToNext()) {
+                @SuppressLint("Range") String itemName = existingItemsCursor.getString(existingItemsCursor.getColumnIndex(Database.COLUMN_NAME));
+                existingItemsList.add(itemName);
+            }
+
+            // Close the cursor
+            existingItemsCursor.close();
+
+            // Show a dialog with a list of existing items for the user to choose
+            AlertDialog.Builder chooseItemBuilder = new AlertDialog.Builder(this);
+            chooseItemBuilder.setTitle("Select Item to Delete");
+
+            // Convert the list to an array for the dialog
+            final String[] existingItemsArray = existingItemsList.toArray(new String[0]);
+
+            // Set up the list of existing items
+            chooseItemBuilder.setItems(existingItemsArray, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Get the selected existing item name
+                    String selectedItemName = existingItemsArray[which];
+
+                    // Retrieve the user ID or other unique identifier for the selected item
+                    long itemId = getItemId(userType, selectedItemName);
+
+                    // Continue with the user type-specific logic (show delete confirmation, etc.)
+                    deleteSpecificUser(userType, itemId);
+                }
+            });
+
+            chooseItemBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            chooseItemBuilder.create().show();
         } else {
-            // Handle the case where user ID is not valid
-            Toast.makeText(this, "Invalid user ID", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "No existing items for deletion.", Toast.LENGTH_SHORT).show();
         }
     }
-
-    // Helper method to get the user ID from the selected item in the database
-    @SuppressLint("Range")
-    private long getUserId() {
-        // Get the selected user type from the Spinner
-        String selectedUserType = userTypeSpinner.getSelectedItem().toString();
-
-        // Retrieve the user ID based on the selected user type
-        // You may need to modify this logic based on your database structure
-        long userId = -1;
-
-        // Example: Fetch the user ID from the database based on the selected user type
-        Cursor userCursor = database.getAllRecords(selectedUserType);
-        if (userCursor != null && userCursor.moveToFirst()) {
-            userId = userCursor.getLong(userCursor.getColumnIndex(getTableIdColumn(selectedUserType)));
-            userCursor.close();
-        }
-
-        return userId;
-    }
-
-
-
-    // Helper method to get a list of user IDs based on the selected user type
-    private List<Long> getUserIds(String selectedUserType) {
-        List<Long> userIds = new ArrayList<>();
-
-        // Fetch user IDs from the database based on the selected user type
-        Cursor userCursor = database.getAllRecords(selectedUserType);
-        if (userCursor != null && userCursor.moveToFirst()) {
-            do {
-                @SuppressLint("Range") long userId = userCursor.getLong(userCursor.getColumnIndex(getTableIdColumn(selectedUserType)));
-                userIds.add(userId);
-            } while (userCursor.moveToNext());
-
-            userCursor.close();
-        }
-
-        return userIds;
-    }
-
 
 }
