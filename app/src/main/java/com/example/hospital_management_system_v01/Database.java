@@ -138,9 +138,23 @@ public class Database extends SQLiteOpenHelper {
 
     // Universal method to retrieve all records from any table
     public Cursor getAllRecords(String tableName) {
+        // Get a readable instance of the database
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.query(tableName, null, null, null, null, null, null);
+
+        // Specify the columns you want to retrieve (null means all columns)
+        String[] projection = null;
+
+        // Specify the selection criteria (null means all rows)
+        String selection = null;
+        String[] selectionArgs = null;
+
+        // Specify the sorting order of the results (null means no sorting)
+        String sortOrder = null;
+
+        // Perform the query and return the cursor
+        return db.query(tableName, projection, selection, selectionArgs, null, null, sortOrder);
     }
+
 
     // Universal method to get the count of records in any table
     public int getNumberOfRecords(String tableName) {
