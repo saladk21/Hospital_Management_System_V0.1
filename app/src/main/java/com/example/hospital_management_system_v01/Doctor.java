@@ -13,7 +13,14 @@ public class Doctor extends AppCompatActivity {
 
         // BLANK
 
+        Database database;
+
+        //initialize
+        database = new Database(this);
+
         // View appointments
+        database.getAllRecords(Database.APPOINTMENT_TABLE_NAME);
+
         // change patient status ie case severe or cured
         // Message the nurse with the prescription using intents.
 
