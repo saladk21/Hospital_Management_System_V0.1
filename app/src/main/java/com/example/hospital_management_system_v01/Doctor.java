@@ -11,7 +11,6 @@ public class Doctor extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor);
 
-
         // BLANK
 
         Database database;
@@ -21,7 +20,8 @@ public class Doctor extends AppCompatActivity {
 
         // View appointments
         database.getAllRecords(Database.APPOINTMENT_TABLE_NAME);
-        // change patient status if case severe or cured
+
+        // change patient status ie case severe or cured
         // Message the nurse with the prescription using intents.
 
     }
