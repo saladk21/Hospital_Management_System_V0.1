@@ -215,48 +215,16 @@ public class Database extends SQLiteOpenHelper {
                 return COLUMN_ID;
         }
     }
-    public Boolean checkUser(String name){
-        SQLiteDatabase db=this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM Doctor WHERE name=? " +
-                        "UNION " +
-                        "SELECT * FROM Nurse WHERE name=? " +
-                        "UNION " +
-                        "SELECT * FROM Patient WHERE name=? " +
-                        "UNION " +
-                        "SELECT * FROM Admin WHERE name=?",
-                new String[]{name, name, name, name});
 
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                // Process the retrieved data here
-                // For example, retrieve values using cursor.getString(columnIndex)
-            }
-            cursor.close();
-        }
+    // Universal method to check login credentials for any user type
+    public Cursor checkLogin(String tableName, String username, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
 
-        if (cursor.getCount()>0)
-            return true;
-        else
-            return false;
+        String selection = COLUMN_NAME + " = ? AND " + COLUMN_PASSWORD + " = ?";
+        String[] selectionArgs = {username, password};
 
-
+        return db.query(tableName, null, selection, selectionArgs, null, null, null);
     }
-    public Boolean checkInfo(String COLUMN_NAME, String COLUMN_PASSWORD){
-        SQLiteDatabase db=this.getReadableDatabase();
-        Cursor cursor=db.rawQuery("SELECT * FROM Doctor WHERE COLUMN_NAME=? and COLUMN_PASSWORD=? " +
-                        "UNION " +
-                        "SELECT * FROM Nurse WHERE COLUMN_NAME=? and COLUMN_PASSWORD=?  " +
-                        "UNION " +
-                        "SELECT * FROM Patient WHERE COLUMN_NAME=? and COLUMN_PASSWORD=?  " +
-                        "UNION " +
-                        "SELECT * FROM Admin WHERE COLUMN_NAME=?and COLUMN_PASSWORD=?",
-                new String[]{COLUMN_NAME,COLUMN_PASSWORD,COLUMN_NAME,COLUMN_PASSWORD, COLUMN_NAME,COLUMN_PASSWORD,COLUMN_NAME,COLUMN_PASSWORD});
-        if (cursor.getCount()>0)
-            return true;
-        else
-            return false;
 
-
-    }
 
 }
