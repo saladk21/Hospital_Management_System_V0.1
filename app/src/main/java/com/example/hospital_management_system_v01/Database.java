@@ -198,6 +198,26 @@ public class Database extends SQLiteOpenHelper {
         return db.delete(tableName, idColumn + " = " + recordId, null);
     }
 
+    // Method to retrieve all rows from a specific table
+    public Cursor getAllRows(String tableName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.query(tableName, null, null, null, null, null, null);
+    }
+
+    //aap
+    public Cursor getAllAppointments() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.query(
+                APPOINTMENT_TABLE_NAME,
+                new String[]{APPOINTMENT_COLUMN_DATE, APPOINTMENT_COLUMN_TIME},
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+    }
+
     // Helper method to get the primary key column for a table
     private String getTableIdColumn(String tableName) {
         switch (tableName) {
@@ -215,4 +235,17 @@ public class Database extends SQLiteOpenHelper {
                 return COLUMN_ID;
         }
     }
+
+    //cursor method for readalldata
+    Cursor readAllData() {
+        String query = "SELECT * FROM " + APPOINTMENT_TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+
+        if (db != null) {
+            db.rawQuery(query, null);
+        }
+        return cursor;
+    }
+
 }
