@@ -6,4 +6,33 @@
     android:layout_height="match_parent"
     tools:context=".Doctor">
 
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/showApp"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:text="Show appointments"/>
+
+        <Button
+            android:id="@+id/changeStat"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:text="change the statues of patients"
+            android:layout_marginTop="16dp"/>
+
+        <Button
+            android:id="@+id/SendPre"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:text="send prescription"
+            android:layout_marginTop="16dp"/>
+
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
