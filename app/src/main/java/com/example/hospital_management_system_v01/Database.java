@@ -68,21 +68,21 @@ public class Database extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // Create Doctor table
+// Create Doctor table
         createTable(db, DOCTOR_TABLE_NAME,
                 DOCTOR_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         COLUMN_NAME + " TEXT, " +
                         COLUMN_PASSWORD + " TEXT, " +
                         DOCTOR_COLUMN_SPECIALTY + " TEXT");
 
-        // Create Nurse table
+// Create Nurse table
         createTable(db, NURSE_TABLE_NAME,
                 NURSE_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         COLUMN_NAME + " TEXT, " +
                         COLUMN_PASSWORD + " TEXT, " +
                         NURSE_COLUMN_DEPARTMENT + " TEXT");
 
-        // Create Patient table
+// Create Patient table
         createTable(db, PATIENT_TABLE_NAME,
                 PATIENT_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         COLUMN_NAME + " TEXT, " +
@@ -90,30 +90,34 @@ public class Database extends SQLiteOpenHelper {
                         PATIENT_COLUMN_ILLNESS + " TEXT, " +
                         PATIENT_COLUMN_STATUS + " TEXT, " +
                         PATIENT_COLUMN_AGE + " INTEGER, " +
-                        PATIENT_COLUMN_GENDER + " TEXT");
+                        PATIENT_COLUMN_GENDER + " TEXT, " +
+                        "assigned_to INTEGER REFERENCES " + DOCTOR_TABLE_NAME + "(" + DOCTOR_COLUMN_ID + ") ON DELETE SET NULL, " + // assigned_to foriegn key
+                        "prescribed_with INTEGER REFERENCES " + MEDICINE_TABLE_NAME + "(" + MEDICINE_COLUMN_ID + ") ON DELETE SET NULL");// prescribed_with foriegn key
 
-        // Create Medicine table
+
+
+// Create Medicine table
         createTable(db, MEDICINE_TABLE_NAME,
                 MEDICINE_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         COLUMN_NAME + " TEXT, " +
                         MEDICINE_COLUMN_EXPIRY_DATE + " TEXT, " +
                         MEDICINE_COLUMN_STOCK + " INTEGER");
 
-        // Create Admin table
+// Create Admin table
         createTable(db, ADMIN_TABLE_NAME,
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         COLUMN_NAME + " TEXT, " +
                         COLUMN_PASSWORD + " TEXT");
 
 
-        // Create Audit Trail table
+// Create Audit Trail table
         createTable(db, AUDIT_TRAIL_TABLE_NAME,
                 AUDIT_TRAIL_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         AUDIT_TRAIL_COLUMN_USER + " TEXT, " +
                         AUDIT_TRAIL_COLUMN_ACTION + " TEXT, " +
                         AUDIT_TRAIL_COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP");
 
-        // Create Appointment table
+// Create Appointment table
         createTable(db, APPOINTMENT_TABLE_NAME,
                 APPOINTMENT_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         APPOINTMENT_COLUMN_DOCTOR_ID + " INTEGER, " +
@@ -124,7 +128,7 @@ public class Database extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Handle database upgrades, if needed
+// Handle database upgrades, if needed
     }
 
     // Universal method to create a table
@@ -141,20 +145,20 @@ public class Database extends SQLiteOpenHelper {
 
     // Universal method to retrieve all records from any table
     public Cursor getAllRecords(String tableName) {
-        // Get a readable instance of the database
+// Get a readable instance of the database
         SQLiteDatabase db = this.getReadableDatabase();
 
-        // Specify the columns you want to retrieve (null means all columns)
+// Specify the columns you want to retrieve (null means all columns)
         String[] projection = null;
 
-        // Specify the selection criteria (null means all rows)
+// Specify the selection criteria (null means all rows)
         String selection = null;
         String[] selectionArgs = null;
 
-        // Specify the sorting order of the results (null means no sorting)
+// Specify the sorting order of the results (null means no sorting)
         String sortOrder = null;
 
-        // Perform the query and return the cursor
+// Perform the query and return the cursor
         return db.query(tableName, projection, selection, selectionArgs, null, null, sortOrder);
     }
 

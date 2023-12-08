@@ -13,15 +13,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Find the button by its ID
+// Find the button by its ID
         Button adminButton = findViewById(R.id.adminButton);
+        Button patButton = findViewById(R.id.patButton);
 
-        // Set up a click event for the button
+// Set up a click event for the button
         adminButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Open the Admin activity when the button is clicked
+// Open the Admin activity when the button is clicked
                 Intent intent = new Intent(MainActivity.this, Admin.class);
+                startActivity(intent);
+            }
+        });
+        patButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+// Open the Admin activity when the button is clicked
+                Intent intent = new Intent(MainActivity.this, Patient.class);
                 startActivity(intent);
             }
         });
