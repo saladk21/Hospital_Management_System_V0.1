@@ -90,7 +90,11 @@ public class Database extends SQLiteOpenHelper {
                         PATIENT_COLUMN_ILLNESS + " TEXT, " +
                         PATIENT_COLUMN_STATUS + " TEXT, " +
                         PATIENT_COLUMN_AGE + " INTEGER, " +
-                        PATIENT_COLUMN_GENDER + " TEXT");
+                        PATIENT_COLUMN_GENDER + " TEXT, " +
+                        "assigned_to INTEGER REFERENCES " + DOCTOR_TABLE_NAME + "(" + DOCTOR_COLUMN_ID + ") ON DELETE SET NULL, " + // assigned_to foriegn key
+                        "prescribed_with INTEGER REFERENCES " + MEDICINE_TABLE_NAME + "(" + MEDICINE_COLUMN_ID + ") ON DELETE SET NULL");// prescribed_with foriegn key
+
+
 
         // Create Medicine table
         createTable(db, MEDICINE_TABLE_NAME,
@@ -236,7 +240,18 @@ public class Database extends SQLiteOpenHelper {
         }
     }
 
+    // Universal method to check login credentials for any user type
+    public Cursor checkLogin(String tableName, String username, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selection = COLUMN_NAME + " = ? AND " + COLUMN_PASSWORD + " = ?";
+        String[] selectionArgs = {username, password};
+
+        return db.query(tableName, null, selection, selectionArgs, null, null, null);
+    }
+
     //cursor method for readalldata
+    @SuppressLint("Recycle")
     Cursor readAllData() {
         String query = "SELECT * FROM " + APPOINTMENT_TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
