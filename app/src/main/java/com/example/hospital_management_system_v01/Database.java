@@ -116,14 +116,18 @@ public class Database extends SQLiteOpenHelper {
                         AUDIT_TRAIL_COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP");
 
         // Create Appointment table
+        // Create Appointment table
         createTable(db, APPOINTMENT_TABLE_NAME,
                 APPOINTMENT_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         APPOINTMENT_COLUMN_DATE + " TEXT, " +
                         APPOINTMENT_COLUMN_TIME + " TEXT, " +
+                        APPOINTMENT_COLUMN_DOCTOR_ID + " INTEGER, " +
+                        APPOINTMENT_COLUMN_PATIENT_ID + " INTEGER, " +
+                        "FOREIGN KEY(" + APPOINTMENT_COLUMN_DOCTOR_ID + ") REFERENCES " +
+                        DOCTOR_TABLE_NAME + "(" + DOCTOR_COLUMN_ID + "), " +
                         "FOREIGN KEY(" + APPOINTMENT_COLUMN_PATIENT_ID + ") REFERENCES " +
-                        PATIENT_TABLE_NAME + "(" + PATIENT_COLUMN_ID + "), " +
-                        "FOREIGN KEY(" + APPOINTMENT_COLUMN_PATIENT_NAME + ") REFERENCES " +
-                        PATIENT_TABLE_NAME + "(" + COLUMN_NAME + ")");
+                        PATIENT_TABLE_NAME + "(" + PATIENT_COLUMN_ID + "))");
+
     }
 
     @Override
