@@ -28,7 +28,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/pName_txt"
+            android:id="@+id/patName_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -41,40 +41,51 @@
             tools:ignore="MissingConstraints" />
 
         <TextView
-            android:id="@+id/pGender_txt"
+            android:id="@+id/patGender_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="2dp"
             android:text="Gender"
             app:layout_constraintStart_toEndOf="@+id/Column_id_txt"
-            app:layout_constraintTop_toBottomOf="@+id/pName_txt"
+            app:layout_constraintTop_toBottomOf="@+id/patName_txt"
             tools:ignore="MissingConstraints" />
 
         <TextView
-            android:id="@+id/pAge_txt"
+            android:id="@+id/patAge_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginTop="2dp"
             android:text="Age"
-            app:layout_constraintStart_toEndOf="@+id/pGender_txt"
-            app:layout_constraintTop_toBottomOf="@+id/pName_txt"
+            app:layout_constraintStart_toEndOf="@+id/patGender_txt"
+            app:layout_constraintTop_toBottomOf="@+id/patName_txt"
             tools:ignore="MissingConstraints" />
 
         <TextView
-            android:id="@+id/pID_txt"
+            android:id="@+id/patID_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="120dp"
             android:text="ID"
-            app:layout_constraintBottom_toBottomOf="@+id/Column_id_txt"
             app:layout_constraintStart_toEndOf="@+id/Column_id_txt"
             app:layout_constraintTop_toTopOf="@+id/Column_id_txt"
             tools:ignore="MissingConstraints" />
 
         <TextView
-            android:id="@+id/pIllness_txt"
+            android:id="@+id/patStatues_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="120dp"
+            android:layout_marginTop="2dp"
+            android:text="Statues"
+            app:layout_constraintBottom_toBottomOf="@+id/Column_id_txt"
+            app:layout_constraintStart_toEndOf="@+id/Column_id_txt"
+            app:layout_constraintTop_toBottomOf="@+id/patID_txt"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/patIllness_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="80dp"
@@ -87,13 +98,13 @@
             tools:ignore="MissingConstraints" />
 
         <TextView
-            android:id="@+id/assignedMedicine_txt"
+            android:id="@+id/patMed_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="80dp"
-            android:text="assigned medicine"
+            android:text="Medicine"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pIllness_txt"
+            app:layout_constraintTop_toBottomOf="@+id/patIllness_txt"
             tools:ignore="MissingConstraints" />
 
         <Button

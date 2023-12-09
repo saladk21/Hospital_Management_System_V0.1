@@ -51,8 +51,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             columnID_txt =itemView.findViewById(R.id.Column_id_txt);
-            pName_txt =itemView.findViewById(R.id.pName_txt);
-            pID_txt =itemView.findViewById(R.id.pID_txt);
+            pName_txt =itemView.findViewById(R.id.patName_txt);
+            pID_txt =itemView.findViewById(R.id.patID_txt);
             docID_txt =itemView.findViewById(R.id.docID_txt);
         }
     }

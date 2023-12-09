@@ -21,11 +21,14 @@ public class Doctor extends AppCompatActivity {
 
 
     RecyclerView recyclerView;
+    RecyclerView recyclerView2;
     ConstraintLayout constraintLayout;
-    FloatingActionButton add_button;
+    ConstraintLayout constraintLayout2;
     Database myDB;
     ArrayList<String> columnID, pName, pID, docID;
+    ArrayList<String> patientID, patientName, patientAge, patientGender, patientIllness, patientMed;
     CustomAdapter customAdapter;
+    CustomAdapter customAdapter2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +38,13 @@ public class Doctor extends AppCompatActivity {
         Log.d("DoctorActivity", "Doctor activity created");
 
         recyclerView = findViewById(R.id.recyclerView);
+        recyclerView2= findViewById(R.id.recyclerView2);
         constraintLayout = findViewById(R.id.showAppLayout);
+        constraintLayout2 = findViewById(R.id.showPatientsLayout);
 
         //initialize database
+
+        //button 1
         myDB = new Database(Doctor.this);
         columnID = new ArrayList<>();
         pName = new ArrayList<>();
@@ -45,9 +52,20 @@ public class Doctor extends AppCompatActivity {
         docID = new ArrayList<>();
         Button showApp = findViewById(R.id.showApp);
 
+        //button 2
+        patientName = new ArrayList<>();
+        patientGender = new ArrayList<>();
+        patientAge = new ArrayList<>();
+        patientID = new ArrayList<>();
+        patientIllness = new ArrayList<>();
+        patientMed = new ArrayList<>();
+        Button showPatients = findViewById(R.id.showPatients);
+
+
         StoreDataInArrays();
 
         customAdapter = new CustomAdapter(Doctor.this, columnID, pName, pID, docID);
+        customAdapter2 = new CustomAdapter(Doctor.this, patientAge, patientGender, patientAge, patientID);
         recyclerView.setAdapter(customAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(Doctor.this));
 
@@ -61,6 +79,19 @@ public class Doctor extends AppCompatActivity {
 
                 } else {
                     constraintLayout.setVisibility(View.GONE);
+                }
+            }
+        });
+        showPatients.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View viewDoc) {
+                // set layout visibility to visible
+                int visibility = constraintLayout2.getVisibility();
+                if (visibility == 8) {
+                    constraintLayout2.setVisibility(View.VISIBLE);
+
+                } else {
+                    constraintLayout2.setVisibility(View.GONE);
                 }
             }
         });
