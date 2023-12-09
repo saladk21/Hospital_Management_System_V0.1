@@ -9,6 +9,7 @@ public class Patient extends AppCompatActivity {
 
     private TextView doctorInfoTextView;
     private TextView medicineInfoTextView;
+    private TextView patientNameTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,21 +18,27 @@ public class Patient extends AppCompatActivity {
 
         doctorInfoTextView = findViewById(R.id.doctorInfoTextView);
         medicineInfoTextView = findViewById(R.id.medicineInfoTextView);
+        patientNameTextView = findViewById(R.id.patientNameTextView);
 
-// Get the patient's information from the database
+        // Get the patient's information from the database
         Database database = new Database(this);
+
+        // Retrieve patient's name from the intent
+        String patientName = getIntent().getStringExtra("USERNAME");
+
+        // Display patient's name
+        patientNameTextView.setText("Patient: " + patientName);
+
         Cursor patientCursor = database.getAllRecords(Database.PATIENT_TABLE_NAME);
 
         if (patientCursor.moveToFirst()) {
             int doctorIdColumnIndex = patientCursor.getColumnIndex("assigned_to");
             int medicineIdColumnIndex = patientCursor.getColumnIndex("prescribed_with");
 
-// Check if the columns exist
             if (doctorIdColumnIndex != -1 && medicineIdColumnIndex != -1) {
                 long doctorId = patientCursor.getLong(doctorIdColumnIndex);
                 long medicineId = patientCursor.getLong(medicineIdColumnIndex);
 
-// Get the doctor's information
                 Cursor doctorCursor = database.getRecordById(Database.DOCTOR_TABLE_NAME, doctorId);
                 if (doctorCursor.moveToFirst()) {
                     int doctorNameColumnIndex = doctorCursor.getColumnIndex(Database.COLUMN_NAME);
@@ -45,7 +52,6 @@ public class Patient extends AppCompatActivity {
                     doctorInfoTextView.setText("Assigned Doctor: Not Available");
                 }
 
-// Get the medicine's information
                 Cursor medicineCursor = database.getRecordById(Database.MEDICINE_TABLE_NAME, medicineId);
                 if (medicineCursor.moveToFirst()) {
                     int medicineNameColumnIndex = medicineCursor.getColumnIndex(Database.COLUMN_NAME);
@@ -64,7 +70,7 @@ public class Patient extends AppCompatActivity {
             }
         }
 
-// Close the cursors
+        // Close the cursors
         patientCursor.close();
         database.close();
     }
