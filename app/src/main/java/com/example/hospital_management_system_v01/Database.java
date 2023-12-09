@@ -57,7 +57,6 @@ public class Database extends SQLiteOpenHelper {
     // Appointment table
     public static final String APPOINTMENT_TABLE_NAME = "Appointment";
     public static final String APPOINTMENT_COLUMN_ID = "_id";
-
     public static final String APPOINTMENT_COLUMN_PATIENT_NAME = "patient_name";
     public static final String APPOINTMENT_COLUMN_DOCTOR_ID = "doctor_id";
     public static final String APPOINTMENT_COLUMN_PATIENT_ID = "patient_id";
@@ -120,7 +119,6 @@ public class Database extends SQLiteOpenHelper {
                         AUDIT_TRAIL_COLUMN_ACTION + " TEXT, " +
                         AUDIT_TRAIL_COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP");
 
-        // Create Appointment table
         // Create Appointment table
         createTable(db, APPOINTMENT_TABLE_NAME,
                 APPOINTMENT_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
