@@ -14,13 +14,14 @@ import java.util.ArrayList;
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
 
     private Context context;
-    private ArrayList book_id, book_title, book_author, book_pages;
+    private ArrayList columnID, pName, pID, docID;
 
-    CustomAdapter(Context constext, ArrayList book_id, ArrayList book_title, ArrayList book_author, ArrayList book_pages) {
-        this.book_id = book_id;
-        this.book_title = book_title;
-        this.book_author = book_author;
-        this.book_pages = book_pages;
+    CustomAdapter(Context context, ArrayList columnID, ArrayList pName, ArrayList pID, ArrayList docID) {
+        this.context = context;
+        this.columnID = columnID;
+        this.pName = pName;
+        this.pID = pID;
+        this.docID = docID;
     }
 
     @NonNull
@@ -33,23 +34,26 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-
+        holder.columnID_txt.setText(String.valueOf(columnID.get(position)));
+        holder.pName_txt.setText(String.valueOf(pName.get(position)));
+        holder.pID_txt.setText(String.valueOf(pID.get(position)));
+        holder.docID_txt.setText(String.valueOf(docID.get(position)));
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return columnID.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView book_id_txt, book_title_txt, book_author_txt, book_pages_txt;
+        TextView columnID_txt, pName_txt, pID_txt, docID_txt;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            book_id_txt=itemView.findViewById(R.id.Column_id_txt);
-            book_title_txt=itemView.findViewById(R.id.Column_id_txt);
-            book_id_txt=itemView.findViewById(R.id.Column_id_txt);
-            book_id_txt=itemView.findViewById(R.id.Column_id_txt);
+            columnID_txt =itemView.findViewById(R.id.Column_id_txt);
+            pName_txt =itemView.findViewById(R.id.pName_txt);
+            pID_txt =itemView.findViewById(R.id.pID_txt);
+            docID_txt =itemView.findViewById(R.id.docID_txt);
         }
     }
 }
