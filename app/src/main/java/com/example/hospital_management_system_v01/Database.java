@@ -1,5 +1,6 @@
 package com.example.hospital_management_system_v01;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -90,7 +91,11 @@ public class Database extends SQLiteOpenHelper {
                         PATIENT_COLUMN_ILLNESS + " TEXT, " +
                         PATIENT_COLUMN_STATUS + " TEXT, " +
                         PATIENT_COLUMN_AGE + " INTEGER, " +
-                        PATIENT_COLUMN_GENDER + " TEXT");
+                        PATIENT_COLUMN_GENDER + " TEXT, " +
+                        "assigned_to INTEGER REFERENCES " + DOCTOR_TABLE_NAME + "(" + DOCTOR_COLUMN_ID + ") ON DELETE SET NULL, " + // assigned_to foriegn key
+                        "prescribed_with INTEGER REFERENCES " + MEDICINE_TABLE_NAME + "(" + MEDICINE_COLUMN_ID + ") ON DELETE SET NULL");// prescribed_with foriegn key
+
+
 
         // Create Medicine table
         createTable(db, MEDICINE_TABLE_NAME,
@@ -198,6 +203,26 @@ public class Database extends SQLiteOpenHelper {
         return db.delete(tableName, idColumn + " = " + recordId, null);
     }
 
+    // Method to retrieve all rows from a specific table
+    public Cursor getAllRows(String tableName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.query(tableName, null, null, null, null, null, null);
+    }
+
+    //aap
+    public Cursor getAllAppointments() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.query(
+                APPOINTMENT_TABLE_NAME,
+                new String[]{APPOINTMENT_COLUMN_DATE, APPOINTMENT_COLUMN_TIME},
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+    }
+
     // Helper method to get the primary key column for a table
     private String getTableIdColumn(String tableName) {
         switch (tableName) {
@@ -215,4 +240,28 @@ public class Database extends SQLiteOpenHelper {
                 return COLUMN_ID;
         }
     }
+
+    // Universal method to check login credentials for any user type
+    public Cursor checkLogin(String tableName, String username, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selection = COLUMN_NAME + " = ? AND " + COLUMN_PASSWORD + " = ?";
+        String[] selectionArgs = {username, password};
+
+        return db.query(tableName, null, selection, selectionArgs, null, null, null);
+    }
+
+    //cursor method for readalldata
+    @SuppressLint("Recycle")
+    Cursor readAllData() {
+        String query = "SELECT * FROM " + APPOINTMENT_TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+
+        if (db != null) {
+            db.rawQuery(query, null);
+        }
+        return cursor;
+    }
+
 }
