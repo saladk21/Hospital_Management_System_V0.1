@@ -28,10 +28,10 @@ public class MainActivity extends AppCompatActivity {
         });
         doctorButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                // Open the Admin activity when the button is clicked
-                Intent intent = new Intent(MainActivity.this, Doctor.class);
-                startActivity(intent);
+            public void onClick(View viewDoc) {
+                // Open the Doctor activity when the button is clicked
+                Intent intentDoc = new Intent(MainActivity.this, Doctor.class);
+                startActivity(intentDoc);
             }
         });
     }
