@@ -57,6 +57,8 @@ public class Database extends SQLiteOpenHelper {
     // Appointment table
     public static final String APPOINTMENT_TABLE_NAME = "Appointment";
     public static final String APPOINTMENT_COLUMN_ID = "_id";
+
+    public static final String APPOINTMENT_COLUMN_PATIENT_NAME = "patient_name";
     public static final String APPOINTMENT_COLUMN_DOCTOR_ID = "doctor_id";
     public static final String APPOINTMENT_COLUMN_PATIENT_ID = "patient_id";
     public static final String APPOINTMENT_COLUMN_DATE = "date";
@@ -121,10 +123,12 @@ public class Database extends SQLiteOpenHelper {
         // Create Appointment table
         createTable(db, APPOINTMENT_TABLE_NAME,
                 APPOINTMENT_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        APPOINTMENT_COLUMN_DOCTOR_ID + " INTEGER, " +
-                        APPOINTMENT_COLUMN_PATIENT_ID + " INTEGER, " +
                         APPOINTMENT_COLUMN_DATE + " TEXT, " +
-                        APPOINTMENT_COLUMN_TIME + " TEXT");
+                        APPOINTMENT_COLUMN_TIME + " TEXT, " +
+                        "FOREIGN KEY(" + APPOINTMENT_COLUMN_PATIENT_ID + ") REFERENCES " +
+                        PATIENT_TABLE_NAME + "(" + PATIENT_COLUMN_ID + "), " +
+                        "FOREIGN KEY(" + APPOINTMENT_COLUMN_PATIENT_NAME + ") REFERENCES " +
+                        PATIENT_TABLE_NAME + "(" + COLUMN_NAME + ")");
     }
 
     @Override
@@ -259,7 +263,7 @@ public class Database extends SQLiteOpenHelper {
         Cursor cursor = null;
 
         if (db != null) {
-            db.rawQuery(query, null);
+            cursor = db.rawQuery(query, null);
         }
         return cursor;
     }
