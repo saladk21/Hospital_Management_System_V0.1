@@ -1,9 +1,191 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Nurse">
+    android:layout_height="match_parent">
 
+    <TableLayout
+        android:id="@+id/medicineTableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:stretchColumns="0,1,2"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp">
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Medicine ID"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Medicine Name"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stock"
+                android:textStyle="bold" />
+        </TableRow>
+
+    </TableLayout>
+
+    <TextView
+        android:id="@+id/doctorLabelTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Doctor:"
+        app:layout_constraintBottom_toTopOf="@+id/doctorSpinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.659"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/medicineTableLayout"
+        app:layout_constraintVertical_bias="0.517" />
+
+    <Spinner
+        android:id="@+id/doctorSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="80dp"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/medicineTableLayout" />
+
+    <TextView
+        android:id="@+id/patientLabelTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Patient:"
+        app:layout_constraintBottom_toTopOf="@+id/patientSpinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.099"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/medicineTableLayout"
+        app:layout_constraintVertical_bias="0.517" />
+
+    <Spinner
+        android:id="@+id/patientSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/doctorSpinner"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/timeEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.109"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/medicineTableLayout"
+        app:layout_constraintVertical_bias="0.384" />
+
+    <Button
+        android:id="@+id/assignButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/patientSpinner"
+        android:layout_marginTop="64dp"
+        android:onClick="onAssignButtonClick"
+        android:text="Assign Patient to Doctor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/patientSpinner"
+        app:layout_constraintVertical_bias="0.741" />
+
+    <Button
+        android:id="@+id/bookAppointmentButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onAssignButtonClickBook"
+        android:text="Book Appointment"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editMedicineButton" />
+
+
+    <Button
+        android:id="@+id/editMedicineButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/patientSpinner"
+        android:layout_marginTop="64dp"
+        android:onClick="onAssignButtonClickMedicine"
+        android:text="Edit Medicine "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/patientSpinner"
+        app:layout_constraintVertical_bias="0.84" />
+
+    <EditText
+        android:id="@+id/newMedicineName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="64dp"
+        android:hint="New Medicine Name"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/assignButton"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <EditText
+        android:id="@+id/newMedicineStock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="112dp"
+        android:hint="New Medicine Stock"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/assignButton"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <TextView
+        android:id="@+id/editMedicineTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Medicine ID:"
+        app:layout_constraintBottom_toTopOf="@+id/medicineSpinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.058"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dateEditText"
+        app:layout_constraintVertical_bias="0.77" />
+
+    <Spinner
+        android:id="@+id/medicineSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="160dp"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/assignButton"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <EditText
+        android:id="@+id/dateEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="36dp"
+        android:hint="Date"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/medicineSpinner"
+        app:layout_constraintTop_toBottomOf="@+id/timeEditText"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <EditText
+        android:id="@+id/timeEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
+        android:hint="Time"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/doctorSpinner" />
+
+    <!-- Add other elements as needed -->
 </androidx.constraintlayout.widget.ConstraintLayout>
