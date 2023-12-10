@@ -14,16 +14,16 @@ import java.util.ArrayList;
 public class CustomAdapter2 extends RecyclerView.Adapter<CustomAdapter2.MyViewHolder> {
 
     private Context context;
-    private ArrayList patientID, patientName, patientAge, patientGender, patientIllness, patientMed;
+    private ArrayList patientID, patientName, patientAge, patientGender, patientIllness, patStatues;
 
-    CustomAdapter2(Context context, ArrayList patientName, ArrayList patientGender, ArrayList patientAge, ArrayList patientID, ArrayList patientIllness, ArrayList patientMed) {
+    CustomAdapter2(Context context, ArrayList patientName, ArrayList patientGender, ArrayList patientAge, ArrayList patientID, ArrayList patientIllness, ArrayList<String> patStatues) {
         this.context = context;
         this.patientName = patientName;
         this.patientGender = patientGender;
         this.patientAge = patientAge;
         this.patientID = patientID;
         this.patientIllness= patientIllness;
-        this.patientMed = patientMed;
+        this.patStatues= patStatues;
     }
 
     @NonNull
@@ -41,7 +41,7 @@ public class CustomAdapter2 extends RecyclerView.Adapter<CustomAdapter2.MyViewHo
         holder.patientAge_txt.setText(String.valueOf(patientAge.get(position)));
         holder.patientID_txt.setText(String.valueOf(patientID.get(position)));
         holder.patientIllness_txt.setText(String.valueOf(patientIllness.get(position)));
-        holder.patientMed_txt.setText(String.valueOf(patientMed.get(position)));
+        holder.patStatues_txt.setText(String.valueOf(patStatues.get(position)));
     }
 
     @Override
@@ -51,7 +51,7 @@ public class CustomAdapter2 extends RecyclerView.Adapter<CustomAdapter2.MyViewHo
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView patientName_txt, patientGender_txt, patientAge_txt, patientID_txt, patientIllness_txt, patientMed_txt;
+        TextView patientName_txt, patientGender_txt, patientAge_txt, patientID_txt, patientIllness_txt , patStatues_txt;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -60,7 +60,7 @@ public class CustomAdapter2 extends RecyclerView.Adapter<CustomAdapter2.MyViewHo
             patientAge_txt =itemView.findViewById(R.id.patAge_txt);
             patientID_txt =itemView.findViewById(R.id.patID_txt);
             patientIllness_txt =itemView.findViewById(R.id.patIllness_txt);
-            patientMed_txt = itemView.findViewById(R.id.patMed_txt);
+            patStatues_txt =itemView.findViewById(R.id.patStatues_txt);
         }
     }
 }

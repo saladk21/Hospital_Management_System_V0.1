@@ -59,6 +59,7 @@ public class Database extends SQLiteOpenHelper {
     public static final String APPOINTMENT_COLUMN_ID = "_id";
     public static final String APPOINTMENT_COLUMN_PATIENT_NAME = "patient_name";
     public static final String APPOINTMENT_COLUMN_DOCTOR_ID = "doctor_id";
+    public static final String APPOINTMENT_COLUMN_DOCTOR_NAME = "doctor_name";
     public static final String APPOINTMENT_COLUMN_PATIENT_ID = "patient_id";
     public static final String APPOINTMENT_COLUMN_DATE = "date";
     public static final String APPOINTMENT_COLUMN_TIME = "time";
@@ -125,11 +126,14 @@ public class Database extends SQLiteOpenHelper {
                         APPOINTMENT_COLUMN_DATE + " TEXT, " +
                         APPOINTMENT_COLUMN_TIME + " TEXT, " +
                         APPOINTMENT_COLUMN_DOCTOR_ID + " INTEGER, " +
+                        APPOINTMENT_COLUMN_DOCTOR_NAME + " TEXT, " +
                         APPOINTMENT_COLUMN_PATIENT_ID + " INTEGER, " +
+                        APPOINTMENT_COLUMN_PATIENT_NAME + " TEXT, " +
                         "FOREIGN KEY(" + APPOINTMENT_COLUMN_DOCTOR_ID + ") REFERENCES " +
                         DOCTOR_TABLE_NAME + "(" + DOCTOR_COLUMN_ID + "), " +
                         "FOREIGN KEY(" + APPOINTMENT_COLUMN_PATIENT_ID + ") REFERENCES " +
-                        PATIENT_TABLE_NAME + "(" + PATIENT_COLUMN_ID + "))");
+                        PATIENT_TABLE_NAME + "(" + PATIENT_COLUMN_ID + ")");
+
 
     }
 
@@ -281,5 +285,36 @@ public class Database extends SQLiteOpenHelper {
         }
         return cursor;
     }
+
+    // ... (Existing code)
+
+    // Universal method to prescribe medicine to a patient
+    public void prescribeMedicine(long patientId, long medicineId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("prescribed_with", medicineId);
+
+        String selection = " _id = ?";
+        String[] selectionArgs = {String.valueOf(patientId)};
+
+        db.update(PATIENT_TABLE_NAME, values, selection, selectionArgs);
+    }
+
+    // Universal method to change the severity of a patient's illness
+    public void changeSeverity(long patientId, String newSeverity) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(PATIENT_COLUMN_STATUS, newSeverity);
+
+        String selection = " _id = ?";
+        String[] selectionArgs = {String.valueOf(patientId)};
+
+        db.update(PATIENT_TABLE_NAME, values, selection, selectionArgs);
+    }
+
+// ... (Existing code)
+
 
 }

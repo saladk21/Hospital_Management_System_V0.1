@@ -14,14 +14,15 @@ import java.util.ArrayList;
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
 
     private Context context;
-    private ArrayList columnID, pName, pID, docID;
+    private ArrayList columnID, pName, pID, dateList, timeList;
 
-    CustomAdapter(Context context, ArrayList columnID, ArrayList pName, ArrayList pID, ArrayList docID) {
+    CustomAdapter(Context context, ArrayList columnID, ArrayList pName, ArrayList pID, ArrayList dateList, ArrayList timeList) {
         this.context = context;
         this.columnID = columnID;
         this.pName = pName;
         this.pID = pID;
-        this.docID = docID;
+        this.dateList = dateList;
+        this.timeList = timeList;
     }
 
     @NonNull
@@ -29,7 +30,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.my_row, parent, false);
-                return new MyViewHolder(view);
+        return new MyViewHolder(view);
     }
 
     @Override
@@ -37,8 +38,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         holder.columnID_txt.setText(String.valueOf(columnID.get(position)));
         holder.pName_txt.setText(String.valueOf(pName.get(position)));
         holder.pID_txt.setText(String.valueOf(pID.get(position)));
-        holder.docID_txt.setText(String.valueOf(docID.get(position)));
+        holder.date_txt.setText(String.valueOf(dateList.get(position)));
+        holder.time_txt.setText(String.valueOf(timeList.get(position)));
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -47,13 +51,17 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView columnID_txt, pName_txt, pID_txt, docID_txt;
+        TextView columnID_txt, pName_txt, pID_txt, date_txt, time_txt;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            columnID_txt =itemView.findViewById(R.id.Column_id_txt);
-            pName_txt =itemView.findViewById(R.id.patName_txt);
-            pID_txt =itemView.findViewById(R.id.patID_txt);
-            docID_txt =itemView.findViewById(R.id.docID_txt);
+            columnID_txt = itemView.findViewById(R.id.Column_id_txt);
+            pName_txt = itemView.findViewById(R.id.patName_txt);
+            pID_txt = itemView.findViewById(R.id.patID_txt);
+            date_txt = itemView.findViewById(R.id.appDate);
+            time_txt = itemView.findViewById(R.id.appTime_txt);
         }
+
     }
 }
+
