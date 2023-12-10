@@ -4,72 +4,77 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F0F0F0"
     tools:context=".Doctor">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center">
 
+        <!-- Change Button background color to 4F709C, reduce corner radius -->
         <Button
             android:id="@+id/showApp"
             android:layout_width="240dp"
             android:layout_height="wrap_content"
-            android:text="Appointments"/>
+            android:text="Appointments"
+            android:backgroundTint="#4F709C" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/showAppLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".Doctor"
             android:visibility="gone"
-            android:id="@+id/showAppLayout">
+            tools:context=".Doctor">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
-                android:paddingTop="?attr/actionBarSize"
                 android:layout_width="409dp"
                 android:layout_height="wrap_content"
+                android:paddingTop="?attr/actionBarSize"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-               />
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <!-- Change Button background color to 4F709C, reduce corner radius -->
         <Button
             android:id="@+id/showPatients"
             android:layout_width="240dp"
             android:layout_height="wrap_content"
-            android:text="Patients"/>
+            android:text="Patients"
+            android:backgroundTint="#4F709C" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/showPatientsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:context=".Doctor">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView2"
+                android:layout_width="409dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="?attr/actionBarSize"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Change Button background color to 4F709C, reduce corner radius -->
         <Button
             android:id="@+id/btnPrescribe"
             android:layout_width="240dp"
             android:layout_height="wrap_content"
-            android:text="Prescribe"/>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".Doctor"
-            android:visibility="gone"
-            android:id="@+id/showPatientsLayout">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView2"
-                android:paddingTop="?attr/actionBarSize"
-                android:layout_width="409dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            android:text="Prescribe"
+            android:backgroundTint="#4F709C" />
 
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

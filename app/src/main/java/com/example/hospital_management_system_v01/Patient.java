@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class Patient extends AppCompatActivity {
+public class Patient extends BaseActivity {
 
     private TextView doctorInfoTextView;
     private TextView medicineInfoTextView;

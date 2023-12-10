@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".PrescriptionActivity">
+    tools:context=".PrescriptionActivity"
+    android:backgroundTint="#F0F0F0">
 
     <!-- Patient Spinner -->
     <TextView
@@ -46,6 +47,7 @@
         android:layout_height="wrap_content"
         android:text="Prescribe"
         android:textColor="@android:color/white"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#4F709C"/>
 
 </LinearLayout>

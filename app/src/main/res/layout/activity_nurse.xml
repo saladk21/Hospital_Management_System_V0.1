@@ -2,7 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:backgroundTint="#4F709C">
 
     <TableLayout
         android:id="@+id/medicineTableLayout"
@@ -11,7 +12,8 @@
         android:padding="8dp"
         android:stretchColumns="0,1,2"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp">
+        tools:layout_editor_absoluteX="0dp"
+       >
 
         <TableRow>
 
@@ -19,7 +21,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Medicine ID"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -95,7 +98,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/patientSpinner"
-        app:layout_constraintVertical_bias="0.741" />
+        app:layout_constraintVertical_bias="0.741"
+        android:backgroundTint="#4F709C"/>
 
     <Button
         android:id="@+id/bookAppointmentButton"
@@ -106,7 +110,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editMedicineButton" />
+        app:layout_constraintTop_toBottomOf="@+id/editMedicineButton"
+        android:backgroundTint="#4F709C"/>
 
 
     <Button
@@ -122,7 +127,8 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/patientSpinner"
-        app:layout_constraintVertical_bias="0.84" />
+        app:layout_constraintVertical_bias="0.84"
+        android:backgroundTint="#4F709C"/>
 
     <EditText
         android:id="@+id/newMedicineName"

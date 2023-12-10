@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class Nurse extends AppCompatActivity {
+public class Nurse extends BaseActivity {
 
 
     private Database database; // Declare the Database object

@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Admin extends AppCompatActivity {
+public class Admin extends BaseActivity {
 
     private LinearLayout dashboardSection;
     private Button addUserButton, editUserButton, deleteUserButton;

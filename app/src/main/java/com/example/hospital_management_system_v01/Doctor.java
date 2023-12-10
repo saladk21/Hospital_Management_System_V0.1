@@ -18,7 +18,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-public class Doctor extends AppCompatActivity {
+public class Doctor extends BaseActivity {
 
 
     RecyclerView recyclerView;

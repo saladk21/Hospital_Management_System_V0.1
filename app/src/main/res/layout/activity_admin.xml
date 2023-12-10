@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
+    android:background="#F0F0F0"
     tools:context=".Admin">
 
     <LinearLayout
@@ -117,13 +118,15 @@
 
     <Button
         android:id="@+id/buttonAddUser"
-        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Add User"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="130dp"
+        android:backgroundTint="#4F709C"
+        />
 
     <Button
         android:id="@+id/buttonEditUser"
@@ -133,7 +136,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonAddUser"
-        style="@style/Widget.AppCompat.Button.Colored" />
+        android:backgroundTint="#4F709C" />
 
     <Button
         android:id="@+id/buttonDeleteUser"
@@ -143,7 +146,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonEditUser"
-        style="@style/Widget.AppCompat.Button.Colored" />
+        android:backgroundTint="#4F709C" />
 
     <Button
         android:id="@+id/dashboardButton"
@@ -153,7 +156,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonDeleteUser"
-        style="@style/Widget.AppCompat.Button.Colored" />
+        android:backgroundTint="#4F709C" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
