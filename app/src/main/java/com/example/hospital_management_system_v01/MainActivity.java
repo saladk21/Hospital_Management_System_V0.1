@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
         // Find the button by its ID
         Button adminButton = findViewById(R.id.adminButton);
         Button doctorButton = findViewById(R.id.doctorButton);
+        Button nurseButton = findViewById(R.id.nurseButton);
 
         // Set up a click event for the button
         adminButton.setOnClickListener(new View.OnClickListener() {
@@ -31,6 +32,22 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Open the Admin activity when the button is clicked
                 Intent intent = new Intent(MainActivity.this, Doctor.class);
+                startActivity(intent);
+            }
+        });
+        adminButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Open the Admin activity when the button is clicked
+                Intent intent = new Intent(MainActivity.this, Admin.class);
+                startActivity(intent);
+            }
+        });
+        nurseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Open the Admin activity when the button is clicked
+                Intent intent = new Intent(MainActivity.this, Nurse.class);
                 startActivity(intent);
             }
         });
