@@ -212,6 +212,61 @@ public class Database extends SQLiteOpenHelper {
         String idColumn = getTableIdColumn(tableName);
         return db.delete(tableName, idColumn + " = " + recordId, null);
     }
+// Update med Information
+
+
+    public boolean updateMedicine(int medicineId, String newMedicineName, int newMedicineStock) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME, newMedicineName);
+        values.put(MEDICINE_COLUMN_STOCK, newMedicineStock);
+
+        String selection = MEDICINE_COLUMN_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(medicineId)};
+
+        int updatedRows = db.update(MEDICINE_TABLE_NAME, values, selection, selectionArgs);
+
+        return updatedRows > 0;
+    }
+
+    //Assign Doctor to a patient in the Nurse Class
+
+
+    public boolean assignDoctorToPatient(int patientId, int doctorId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("assigned_to", doctorId);
+
+        // Construct the WHERE clause to update the specific patient ID
+        String selection = PATIENT_COLUMN_ID + " = ?";
+        String[] selectionArgs = { String.valueOf(patientId) };
+
+        // Perform the update operation
+        int updatedRows = db.update(PATIENT_TABLE_NAME, values, selection, selectionArgs);
+
+        // Check if the update was successful
+        return updatedRows > 0;
+    }
+    // Inside the Database class
+
+    // Method to book an appointment
+    public long bookAppointment(int doctorId, int patientId, String date, String time) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(APPOINTMENT_COLUMN_DOCTOR_ID, doctorId);
+        values.put(APPOINTMENT_COLUMN_PATIENT_ID, patientId);
+        values.put(APPOINTMENT_COLUMN_DATE, date);
+        values.put(APPOINTMENT_COLUMN_TIME, time);
+
+        // Insert the appointment record
+        return db.insert(APPOINTMENT_TABLE_NAME, null, values);
+    }
+
+
+
 
     // Method to retrieve all rows from a specific table
     public Cursor getAllRows(String tableName) {
