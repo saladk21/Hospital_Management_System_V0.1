@@ -16,7 +16,7 @@
         <!-- Change Button background color to 4F709C, reduce corner radius -->
         <Button
             android:id="@+id/showApp"
-            android:layout_width="240dp"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:text="Appointments"
             android:backgroundTint="#4F709C" />
@@ -43,7 +43,7 @@
         <!-- Change Button background color to 4F709C, reduce corner radius -->
         <Button
             android:id="@+id/showPatients"
-            android:layout_width="240dp"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:text="Patients"
             android:backgroundTint="#4F709C" />
@@ -70,7 +70,7 @@
         <!-- Change Button background color to 4F709C, reduce corner radius -->
         <Button
             android:id="@+id/btnPrescribe"
-            android:layout_width="240dp"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:text="Prescribe"
             android:backgroundTint="#4F709C" />
