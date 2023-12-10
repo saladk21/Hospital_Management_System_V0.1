@@ -269,5 +269,17 @@ public class Database extends SQLiteOpenHelper {
         }
         return cursor;
     }
+    //cursor method for readalldata2
+    @SuppressLint("Recycle")
+    Cursor readAllData2() {
+        String query = "SELECT * FROM " + PATIENT_TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+
+        if (db != null) {
+            cursor = db.rawQuery(query, null);
+        }
+        return cursor;
+    }
 
 }

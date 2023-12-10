@@ -22,13 +22,14 @@ public class Doctor extends AppCompatActivity {
 
     RecyclerView recyclerView;
     RecyclerView recyclerView2;
+
     ConstraintLayout constraintLayout;
     ConstraintLayout constraintLayout2;
     Database myDB;
     ArrayList<String> columnID, pName, pID, docID;
     ArrayList<String> patientID, patientName, patientAge, patientGender, patientIllness, patientMed;
     CustomAdapter customAdapter;
-    CustomAdapter customAdapter2;
+    CustomAdapter2 customAdapter2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +64,12 @@ public class Doctor extends AppCompatActivity {
 
 
         StoreDataInArrays();
+        StoreDataInArrays2();
 
         customAdapter = new CustomAdapter(Doctor.this, columnID, pName, pID, docID);
-        customAdapter2 = new CustomAdapter(Doctor.this, patientAge, patientGender, patientAge, patientID);
+        customAdapter2 = new CustomAdapter2(Doctor.this, patientAge, patientGender, patientAge, patientID, patientIllness, patientMed);
         recyclerView.setAdapter(customAdapter);
+        recyclerView2.setAdapter(customAdapter2);
         recyclerView.setLayoutManager(new LinearLayoutManager(Doctor.this));
 
         showApp.setOnClickListener(new View.OnClickListener() {
@@ -100,20 +103,49 @@ public class Doctor extends AppCompatActivity {
 
     void StoreDataInArrays() {
         Cursor cursor = myDB.readAllData();
-        if (cursor.getCount() == 0) {
-            Toast.makeText(this, "no data.", Toast.LENGTH_SHORT).show();
-        } else {
-            while (cursor.moveToNext()) {
-                columnID.add(cursor.getString(0));
-                pName.add(cursor.getString(1));
-                pID.add(cursor.getString(2));
-                docID.add(cursor.getString(3));
+        try {
+            if (cursor.getCount() == 0) {
+                Toast.makeText(this, "no data.", Toast.LENGTH_SHORT).show();
+            } else {
+                while (cursor.moveToNext()) {
+                    columnID.add(cursor.getString(0));
+                    pName.add(cursor.getString(1));
+                    pID.add(cursor.getString(2));
+                    docID.add(cursor.getString(3));
+                }
+                Log.d("DoctorActivity", "columnID size: " + columnID.size());
+                Log.d("DoctorActivity", "pName size: " + pName.size());
+                Log.d("DoctorActivity", "pID size: " + pID.size());
+                Log.d("DoctorActivity", "docID size: " + docID.size());
             }
-            Log.d("DoctorActivity", "columnID size: " + columnID.size());
-            Log.d("DoctorActivity", "pName size: " + pName.size());
-            Log.d("DoctorActivity", "pID size: " + pID.size());
-            Log.d("DoctorActivity", "docID size: " + docID.size());
+        } finally {
+            // Ensure the cursor is closed in the finally block
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
         }
-
     }
+    void StoreDataInArrays2() {
+        Cursor cursor = myDB.readAllData2();
+        try {
+            if (cursor.getCount() == 0) {
+                Toast.makeText(this, "no data.", Toast.LENGTH_SHORT).show();
+            } else {
+                while (cursor.moveToNext()) {
+                    patientName.add(cursor.getString(0));
+                    patientGender.add(cursor.getString(1));
+                    patientAge.add(cursor.getString(2));
+                    patientID.add(cursor.getString(3));
+                    patientIllness.add(cursor.getString(4));
+                    patientMed.add(cursor.getString(5));
+                }
+            }
+        } finally {
+            // Ensure the cursor is closed in the finally block
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+    }
+
 }

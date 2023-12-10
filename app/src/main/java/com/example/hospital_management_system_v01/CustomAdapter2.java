@@ -51,7 +51,7 @@ public class CustomAdapter2 extends RecyclerView.Adapter<CustomAdapter2.MyViewHo
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView patientName_txt, patientGender_txt, patientAge_txt, patientID_txt, patientIllness_txt, patientMed_txt;;
+        TextView patientName_txt, patientGender_txt, patientAge_txt, patientID_txt, patientIllness_txt, patientMed_txt;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
