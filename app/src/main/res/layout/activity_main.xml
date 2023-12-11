@@ -4,57 +4,65 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:backgroundTint="#4F709C">
 
     <Button
         android:id="@+id/adminButton"
-        android:layout_width="wrap_content"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:text="Go to Admin Page"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="5dp"/>
+        android:layout_marginTop="200dp"
+        android:layout_marginBottom="5dp"
+        android:backgroundTint="#4F709C"/>
 
     <Button
         android:id="@+id/doctorButton"
-        android:layout_width="wrap_content"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:text="Go to Doctor Page"
         app:layout_constraintTop_toBottomOf="@id/adminButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="5dp"/>
+        android:layout_margin="5dp"
+        android:backgroundTint="#4F709C"
+        />
 
     <Button
         android:id="@+id/loginButton"
-        android:layout_width="wrap_content"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:text="Login"
         app:layout_constraintTop_toBottomOf="@id/doctorButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="5dp" />
+        android:layout_margin="5dp"
+        android:backgroundTint="#4F709C"/>
 
     <Button
         android:id="@+id/patButton"
-        android:layout_width="wrap_content"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:text="PatButton"
         app:layout_constraintTop_toBottomOf="@id/loginButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="5dp" />
+        android:layout_margin="5dp"
+        android:backgroundTint="#4F709C"/>
 
     <Button
         android:id="@+id/nurseButton"
-        android:layout_width="wrap_content"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:text="Go to Nurse Page"
         app:layout_constraintTop_toBottomOf="@id/patButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="5dp" />
+        android:layout_margin="5dp"
+        android:backgroundTint="#4F709C"/>
 
     <TextView
         android:id="@+id/textView"

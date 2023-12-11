@@ -2,7 +2,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:backgroundTint="#4F709C">
+
+    <TextView
+        android:id="@+id/bannerTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#4F709C"
+        android:gravity="center"
+        android:text="Nurse Page"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TableLayout
         android:id="@+id/medicineTableLayout"
@@ -10,8 +24,9 @@
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:stretchColumns="0,1,2"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp">
+        app:layout_constraintTop_toBottomOf="@id/bannerTextView"
+        tools:layout_editor_absoluteX="0dp"
+       >
 
         <TableRow>
 
@@ -19,7 +34,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Medicine ID"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -81,48 +97,60 @@
         app:layout_constraintHorizontal_bias="0.109"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/medicineTableLayout"
-        app:layout_constraintVertical_bias="0.384" />
+        app:layout_constraintVertical_bias="0.475" />
 
     <Button
         android:id="@+id/assignButton"
-        android:layout_width="wrap_content"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/patientSpinner"
         android:layout_marginTop="64dp"
+        android:backgroundTint="#4F709C"
         android:onClick="onAssignButtonClick"
         android:text="Assign Patient to Doctor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/patientSpinner"
-        app:layout_constraintVertical_bias="0.741" />
+        app:layout_constraintVertical_bias="0.6" />
 
     <Button
         android:id="@+id/bookAppointmentButton"
-        android:layout_width="wrap_content"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="#4F709C"
         android:onClick="onAssignButtonClickBook"
         android:text="Book Appointment"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editMedicineButton" />
 
-
     <Button
         android:id="@+id/editMedicineButton"
-        android:layout_width="wrap_content"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/patientSpinner"
-        android:layout_marginTop="64dp"
+        android:backgroundTint="#4F709C"
         android:onClick="onAssignButtonClickMedicine"
         android:text="Edit Medicine "
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/patientSpinner"
-        app:layout_constraintVertical_bias="0.84" />
+        app:layout_constraintTop_toBottomOf="@+id/assignButton" />
+
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#4F709C"
+        android:text="Logout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bookAppointmentButton" />
 
     <EditText
         android:id="@+id/newMedicineName"

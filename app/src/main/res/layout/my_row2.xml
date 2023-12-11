@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:backgroundTint="#F0F0F0">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -12,7 +13,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:padding="12dp">
 
         <TextView
@@ -89,8 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="80dp"
-            android:text="Illness
-"
+            android:text="Illness"
             app:layout_constraintBottom_toBottomOf="@+id/Column_id_txt"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/Column_id_txt"

@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class Medicine extends AppCompatActivity {
+public class Medicine extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

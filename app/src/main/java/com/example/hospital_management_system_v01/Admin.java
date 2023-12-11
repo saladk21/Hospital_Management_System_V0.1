@@ -3,6 +3,7 @@ package com.example.hospital_management_system_v01;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,7 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Admin extends AppCompatActivity {
+public class Admin extends BaseActivity {
 
     private LinearLayout dashboardSection;
     private Button addUserButton, editUserButton, deleteUserButton;
@@ -40,6 +41,14 @@ public class Admin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
+        Button btnLogout = findViewById(R.id.btnLogout);
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logout();
+            }
+        });
+
         dashboardSection = findViewById(R.id.dashboardSection);
         recentAuditTrailEventsTextView = findViewById(R.id.recentAuditTrailEventsTextView);
 
@@ -51,10 +60,14 @@ public class Admin extends AppCompatActivity {
         userTypeLayout = findViewById(R.id.userTypeLayout);
         userTypeSpinner = findViewById(R.id.userTypeSpinner);
 
-        // Initialize database
+        Intent intent = getIntent();
+        String username = intent.getStringExtra("USERNAME");
+
+        TextView bannerTextView = findViewById(R.id.bannerTextView);
+        bannerTextView.setText("Admin Page - " + username);
+
         database = new Database(this);
 
-        // Set up click listeners
         addUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,79 +118,31 @@ public class Admin extends AppCompatActivity {
         }
     }
 
-    private void viewAuditTrail() {
-        // Update the TextView with actual audit trail events from the database
-        Cursor auditTrailCursor = database.getAuditTrail();
-
-        StringBuilder auditTrailStringBuilder = new StringBuilder();
-
-        while (auditTrailCursor.moveToNext()) {
-            @SuppressLint("Range") String userName = auditTrailCursor.getString(auditTrailCursor.getColumnIndex(Database.AUDIT_TRAIL_COLUMN_USER));
-            @SuppressLint("Range") String action = auditTrailCursor.getString(auditTrailCursor.getColumnIndex(Database.AUDIT_TRAIL_COLUMN_ACTION));
-            @SuppressLint("Range") long timestamp = auditTrailCursor.getLong(auditTrailCursor.getColumnIndex(Database.AUDIT_TRAIL_COLUMN_TIMESTAMP));
-
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String formattedDate = sdf.format(new Date(timestamp));
-
-            auditTrailStringBuilder.append("User: ").append(userName)
-                    .append("\nAction: ").append(action)
-                    .append("\nTimestamp: ").append(formattedDate)
-                    .append("\n\n");
-        }
-
-        auditTrailCursor.close();
-
-        // Display audit trail in the TextView
-        recentAuditTrailEventsTextView.setText(auditTrailStringBuilder.toString());
-        Toast.makeText(this, "Audit Trail Loaded", Toast.LENGTH_SHORT).show();
+    private void logout() {
+        finish();
+        Intent intent = new Intent(Admin.this, Login.class);
+        startActivity(intent);
     }
 
     private void addUser() {
-        // Add this line to set up the initial visibility
         userTypeLayout.setVisibility(View.VISIBLE);
 
-        // Create a dialog to input user information based on user type
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select User Type");
 
-        // Inflate the dialog layout
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_user, null);
         builder.setView(dialogView);
 
-        // Find the Spinner in the dialog layout
         Spinner userTypeSpinnerDialog = dialogView.findViewById(R.id.userTypeSpinnerDialog);
-
-        // Populate the Spinner with user types
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, getUserTypes());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         userTypeSpinnerDialog.setAdapter(adapter);
-
-        // Set up the buttons
         builder.setPositiveButton("Next", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Hide the userTypeLayout when user has selected a type
                 userTypeLayout.setVisibility(View.GONE);
-
-                // Get the selected user type from the Spinner
                 String userType = userTypeSpinnerDialog.getSelectedItem().toString();
-
-                // Continue with the user type-specific logic (inflate layout, etc.)
                 addSpecificUser(userType);
-
-                // Handle user type-specific logic based on the selected user type
-                int layoutId = getLayoutId(userType);
-                View userSpecificDialogView = getLayoutInflater().inflate(layoutId, null);
-
-                // Continue with your logic to handle the specific user type dialog
-                // For example, show another AlertDialog or customize the current one based on the user type
-                // You can access the userSpecificDialogView and its components to perform specific actions
-
-                // Retrieve the entered information based on user type
-                ContentValues values = getUserTypeValues(userSpecificDialogView, userType);
-
-                // Add the record to the database
-                long result = database.addRecord(userType, values);
             }
         });
 
@@ -191,7 +156,6 @@ public class Admin extends AppCompatActivity {
         builder.create().show();
     }
 
-    // Get the layout resource ID based on the user type
     private int getLayoutId(String userType) {
         switch (userType) {
             case Database.ADMIN_TABLE_NAME:
@@ -205,11 +169,10 @@ public class Admin extends AppCompatActivity {
             case Database.MEDICINE_TABLE_NAME:
                 return R.layout.layout_medicine_fields;
             default:
-                return -1; // Return an invalid layout ID or handle accordingly
+                return -1;
         }
     }
 
-    // populate the user type Spinner
     private List<String> getUserTypes() {
         List<String> userTypes = new ArrayList<>();
         userTypes.add(Database.ADMIN_TABLE_NAME);
@@ -220,11 +183,9 @@ public class Admin extends AppCompatActivity {
         return userTypes;
     }
 
-    // Get the ContentValues based on the user type and entered information
     private ContentValues getUserTypeValues(View dialogView, String userType) {
         ContentValues values = new ContentValues();
 
-        // Retrieve additional fields based on user type
         switch (userType) {
             case Database.ADMIN_TABLE_NAME:
                 String adminName = ((EditText) dialogView.findViewById(R.id.editTextAdminName)).getText().toString();
@@ -255,13 +216,11 @@ public class Admin extends AppCompatActivity {
                 EditText ageEditText = dialogView.findViewById(R.id.editTextAge);
                 String ageString = ageEditText.getText().toString().trim();
 
-                // Check if the age string is not empty before parsing
                 if (!ageString.isEmpty()) {
                     int patientAge = Integer.parseInt(ageString);
                     values.put(Database.PATIENT_COLUMN_AGE, patientAge);
                 } else {
-                    // Handle the case where age is empty, e.g., show an error or set a default value
-                    // For now, let's assume a default age of 0
+
                     values.put(Database.PATIENT_COLUMN_AGE, 0);
                 }
 
@@ -282,8 +241,6 @@ public class Admin extends AppCompatActivity {
             case Database.MEDICINE_TABLE_NAME:
                 String medicineName = ((EditText) dialogView.findViewById(R.id.editTextMedicineName)).getText().toString();
                 String medicineEx = ((EditText) dialogView.findViewById(R.id.editTextExpiryDate)).getText().toString();
-
-                // Check if the medicine stock quantity is not empty before parsing
                 EditText stockEditText = dialogView.findViewById(R.id.editTextStockQuantity);
                 String stockString = stockEditText.getText().toString().trim();
 
@@ -291,8 +248,7 @@ public class Admin extends AppCompatActivity {
                     int medicineStock = Integer.parseInt(stockString);
                     values.put(Database.MEDICINE_COLUMN_STOCK, medicineStock);
                 } else {
-                    // Handle the case where stock quantity is empty, e.g., show an error or set a default value
-                    // For now, let's assume a default stock quantity of 0
+
                     values.put(Database.MEDICINE_COLUMN_STOCK, 0);
                 }
 
@@ -301,7 +257,7 @@ public class Admin extends AppCompatActivity {
 
                 break;
             default:
-                // Handle unknown user types or provide a default behavior
+
                 break;
 
         }
@@ -312,11 +268,9 @@ public class Admin extends AppCompatActivity {
     private void addSpecificUser(String userType) {
         Log.d("AddSpecificUser", "Adding " + userType);
 
-        // Inflate the corresponding layout based on the selected user type
         AlertDialog.Builder specificUserBuilder = new AlertDialog.Builder(this);
         specificUserBuilder.setTitle("Add " + userType);
 
-        // Inflate the layout for the specific user type
         View userSpecificDialogView = getLayoutInflater().inflate(getLayoutId(userType), null);
         specificUserBuilder.setView(userSpecificDialogView);
 
@@ -325,10 +279,8 @@ public class Admin extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 Log.d("AddSpecificUser", "Save button clicked");
 
-                // Retrieve the entered information based on user type
                 ContentValues values = getUserTypeValues(userSpecificDialogView, userType);
 
-                // Add the record to the database
                 try {
                     long result = database.addRecord(userType, values);
                     Log.d("AddSpecificUser", "Record added to the database. Result: " + result);
@@ -337,7 +289,6 @@ public class Admin extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                // Show a toast based on the result
                 Toast.makeText(Admin.this, "User added successfully", Toast.LENGTH_SHORT).show();
             }
         });
@@ -357,30 +308,23 @@ public class Admin extends AppCompatActivity {
 
 
     private void editUser() {
-        // Show a dialog to select the user type to edit
         AlertDialog.Builder selectUserBuilder = new AlertDialog.Builder(this);
         selectUserBuilder.setTitle("Select User Type");
 
-        // Inflate the dialog layout
         View selectUserDialogView = getLayoutInflater().inflate(R.layout.dialog_select_user, null);
         selectUserBuilder.setView(selectUserDialogView);
 
-        // Find the Spinner in the dialog layout
         Spinner selectUserTypeSpinner = selectUserDialogView.findViewById(R.id.selectUserTypeSpinner);
 
-        // Populate the Spinner with user types
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, getUserTypes());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         selectUserTypeSpinner.setAdapter(adapter);
 
-        // Set up the buttons for selecting a user type
         selectUserBuilder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Get the selected user type from the Spinner
-                String selectedUserType = selectUserTypeSpinner.getSelectedItem().toString();
 
-                // Show the list of existing items for the selected user type
+                String selectedUserType = selectUserTypeSpinner.getSelectedItem().toString();
                 showExistingItemsForEdit(selectedUserType);
             }
         });
@@ -395,18 +339,12 @@ public class Admin extends AppCompatActivity {
         selectUserBuilder.create().show();
     }
 
-
-
-    // Add this method for editing a specific user
     private void editSpecificUser(String userType, long itemId) {
-        // Fetch the user details based on the user type and item ID
         Cursor userCursor = database.getRecordById(userType, itemId);
 
         if (userCursor != null && userCursor.moveToFirst()) {
-            // Inflate the dialog layout based on the user type
             int layoutId = getLayoutId(userType);
             if (layoutId == -1) {
-                // Handle invalid layout ID
                 Toast.makeText(Admin.this, "Invalid user type", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -416,21 +354,13 @@ public class Admin extends AppCompatActivity {
 
             View dialogView = getLayoutInflater().inflate(layoutId, null);
             editUserBuilder.setView(dialogView);
-
-            // Retrieve the user details from the cursor and populate the dialog fields
             getUserTypeValuesFromCursor(dialogView, userType, userCursor);
-
-            // Set up the buttons for editing a user
             editUserBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    // Retrieve the entered information based on user type
                     ContentValues updatedValues = getUserTypeValues(dialogView, userType);
-
-                    // Update the record in the database
                     int result = database.updateRecord(userType, itemId, updatedValues);
 
-                    // Show a toast based on the result
                     if (result > 0) {
                         Toast.makeText(Admin.this, "User updated successfully", Toast.LENGTH_SHORT).show();
                     } else {
@@ -447,11 +377,10 @@ public class Admin extends AppCompatActivity {
             });
 
             editUserBuilder.create().show();
-
-            // Close the cursor
             userCursor.close();
+
         } else {
-            // Handle the case where the cursor is null or empty
+
             Toast.makeText(Admin.this, "User details not found", Toast.LENGTH_SHORT).show();
         }
     }

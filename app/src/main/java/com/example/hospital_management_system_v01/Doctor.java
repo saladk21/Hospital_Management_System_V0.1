@@ -12,13 +12,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-public class Doctor extends AppCompatActivity {
+public class Doctor extends BaseActivity {
 
 
     RecyclerView recyclerView;
@@ -37,12 +38,25 @@ public class Doctor extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor);
 
-        Log.d("DoctorActivity", "Doctor activity created");
+        Button btnLogout = findViewById(R.id.btnLogout);
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logout();
+            }
+        });
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView2= findViewById(R.id.recyclerView2);
         constraintLayout = findViewById(R.id.showAppLayout);
         constraintLayout2 = findViewById(R.id.showPatientsLayout);
+
+        // Get the username from the intent
+        Intent intent = getIntent();
+        String username = intent.getStringExtra("USERNAME");
+
+        TextView bannerTextView = findViewById(R.id.bannerTextView);
+        bannerTextView.setText("Doctor Page - " + username);
 
         myDB = new Database(Doctor.this);
         columnID = new ArrayList<>();
@@ -83,6 +97,7 @@ public class Doctor extends AppCompatActivity {
                 int visibility = constraintLayout.getVisibility();
                 if (visibility == 8) {
                     constraintLayout.setVisibility(View.VISIBLE);
+                    constraintLayout2.setVisibility(View.GONE);
 
                 } else {
                     constraintLayout.setVisibility(View.GONE);
@@ -96,6 +111,7 @@ public class Doctor extends AppCompatActivity {
                 int visibility = constraintLayout2.getVisibility();
                 if (visibility == 8) {
                     constraintLayout2.setVisibility(View.VISIBLE);
+                    constraintLayout.setVisibility(View.GONE);
 
                 } else {
                     constraintLayout2.setVisibility(View.GONE);
@@ -114,17 +130,28 @@ public class Doctor extends AppCompatActivity {
 
     @SuppressLint("Range")
     void StoreDataInArrays() {
+        // Get the username from the intent
+        Intent intent = getIntent();
+        String username = intent.getStringExtra("USERNAME");
+
+        // Get the doctor ID based on the username
+        int doctorId = myDB.getDoctorIdByUsername(username);
+
         Cursor cursor = myDB.readAllData();
         try {
             if (cursor.getCount() == 0) {
                 Toast.makeText(this, "no data.", Toast.LENGTH_SHORT).show();
             } else {
                 while (cursor.moveToNext()) {
-                    columnID.add(cursor.getString(0));
-                    pName.add(cursor.getString(cursor.getColumnIndex(Database.APPOINTMENT_COLUMN_PATIENT_NAME)));
-                    pID.add(cursor.getString(cursor.getColumnIndex(Database.APPOINTMENT_COLUMN_PATIENT_ID)));
-                    dateList.add(cursor.getString(cursor.getColumnIndex(Database.APPOINTMENT_COLUMN_DATE)));
-                    timeList.add(cursor.getString(cursor.getColumnIndex(Database.APPOINTMENT_COLUMN_TIME)));
+                    // Check if the appointment is assigned to the current doctor
+                    int assignedDoctorId = cursor.getInt(cursor.getColumnIndex(Database.APPOINTMENT_COLUMN_DOCTOR_ID));
+                    if (assignedDoctorId == doctorId) {
+                        columnID.add(cursor.getString(0));
+                        pName.add(cursor.getString(cursor.getColumnIndex(Database.APPOINTMENT_COLUMN_PATIENT_NAME)));
+                        pID.add(cursor.getString(cursor.getColumnIndex(Database.APPOINTMENT_COLUMN_PATIENT_ID)));
+                        dateList.add(cursor.getString(cursor.getColumnIndex(Database.APPOINTMENT_COLUMN_DATE)));
+                        timeList.add(cursor.getString(cursor.getColumnIndex(Database.APPOINTMENT_COLUMN_TIME)));
+                    }
                 }
             }
         } finally {
@@ -135,20 +162,37 @@ public class Doctor extends AppCompatActivity {
     }
 
 
+    private void logout() {
+        finish();
+        Intent intent = new Intent(Doctor.this, Login.class);
+        startActivity(intent);
+    }
+
     @SuppressLint("Range")
     void StoreDataInArrays2() {
+        // Get the username from the intent
+        Intent intent = getIntent();
+        String username = intent.getStringExtra("USERNAME");
+
+        // Get the doctor ID based on the username
+        int doctorId = myDB.getDoctorIdByUsername(username);
+
         Cursor cursor = myDB.readAllData2();
         try {
             if (cursor.getCount() == 0) {
                 Toast.makeText(this, "no data.", Toast.LENGTH_SHORT).show();
             } else {
                 while (cursor.moveToNext()) {
-                    patientName.add(cursor.getString(cursor.getColumnIndex(Database.COLUMN_NAME)));
-                    patientGender.add(cursor.getString(cursor.getColumnIndex(Database.PATIENT_COLUMN_GENDER)));
-                    patientAge.add(cursor.getString(cursor.getColumnIndex(Database.PATIENT_COLUMN_AGE)));
-                    patientID.add(cursor.getString(cursor.getColumnIndex(Database.PATIENT_COLUMN_ID)));
-                    patientIllness.add(cursor.getString(cursor.getColumnIndex(Database.PATIENT_COLUMN_ILLNESS)));
-                    patStatues.add(cursor.getString(cursor.getColumnIndex(Database.PATIENT_COLUMN_STATUS)));
+                    // Check if the patient is assigned to the current doctor
+                    int assignedDoctorId = cursor.getInt(cursor.getColumnIndex("assigned_to"));
+                    if (assignedDoctorId == doctorId) {
+                        patientName.add(cursor.getString(cursor.getColumnIndex(Database.COLUMN_NAME)));
+                        patientGender.add(cursor.getString(cursor.getColumnIndex(Database.PATIENT_COLUMN_GENDER)));
+                        patientAge.add(cursor.getString(cursor.getColumnIndex(Database.PATIENT_COLUMN_AGE)));
+                        patientID.add(cursor.getString(cursor.getColumnIndex(Database.PATIENT_COLUMN_ID)));
+                        patientIllness.add(cursor.getString(cursor.getColumnIndex(Database.PATIENT_COLUMN_ILLNESS)));
+                        patStatues.add(cursor.getString(cursor.getColumnIndex(Database.PATIENT_COLUMN_STATUS)));
+                    }
                 }
             }
         } finally {
@@ -158,6 +202,8 @@ public class Doctor extends AppCompatActivity {
             }
         }
     }
+
+
 
     private void launchPrescriptionActivity(String actionType) {
         Intent intent = new Intent(Doctor.this, PrescriptionActivity.class);

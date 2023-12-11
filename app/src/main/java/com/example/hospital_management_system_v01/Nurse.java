@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class Nurse extends AppCompatActivity {
+public class Nurse extends BaseActivity {
 
 
     private Database database; // Declare the Database object
@@ -37,6 +37,22 @@ public class Nurse extends AppCompatActivity {
         setContentView(R.layout.activity_nurse);
         Button assignDoctor = findViewById(R.id.assignButton);
         Button bookAppointment = findViewById(R.id.bookAppointmentButton);
+
+        Intent intent = getIntent();
+        String username = intent.getStringExtra("USERNAME");
+
+        TextView bannerTextView = findViewById(R.id.bannerTextView);
+        bannerTextView.setText("Nurse Page - " + username);
+
+        Button btnLogout = findViewById(R.id.btnLogout);
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logout();
+            }
+        });
+
+
         // Initialize the Database object
         database = new Database(this);
         doctorSpinner = findViewById(R.id.doctorSpinner);
@@ -81,10 +97,11 @@ public class Nurse extends AppCompatActivity {
 
     }
 
-    // Function to get and display medicine information based on medicine ID
-// Inside Nurse class
-
-    // Function to display all available medicines
+    private void logout() {
+        finish();
+        Intent intent = new Intent(Nurse.this, Login.class);
+        startActivity(intent);
+    }
     private void displayAllMedicines() {
         Cursor medicineCursor = database.getAllRecords(Database.MEDICINE_TABLE_NAME);
         TableLayout medicineTableLayout = findViewById(R.id.medicineTableLayout);
@@ -173,13 +190,19 @@ public class Nurse extends AppCompatActivity {
     }
 
     public void onAssignButtonClickMedicine(View view) {
-
         int medicineId = getSelectedMedicineId();
         String newMedicineName = getNewMedicineName();
         int newMedicineStock = getNewMedicineStock();
 
+        // Update medicine information
+        database.updateMedicine(medicineId, newMedicineName, newMedicineStock);
 
-        database.updateMedicine(medicineId, newMedicineName,newMedicineStock);
+        // Show a Toast message based on the result
+        if (database.updateMedicine(medicineId, newMedicineName, newMedicineStock)) {
+            Toast.makeText(this, "Medicine updated successfully", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Failed to update medicine", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
@@ -201,12 +224,21 @@ public class Nurse extends AppCompatActivity {
 
 
     public void onAssignButtonClick(View view) {
-        // Get selected doctor and patient IDs from spinners
         int doctorId = getSelectedDoctorId();
         int patientId = getSelectedPatientId();
 
+        // Get the patient name
+        String patientName = getSelectedPatientName();
+
         // Assign the patient to the doctor
-        database.assignDoctorToPatient(patientId, doctorId);
+         database.assignDoctorToPatient(patientId, doctorId);
+
+        // Show a Toast message based on the result
+        if (database.assignDoctorToPatient(patientId, doctorId)) {
+            Toast.makeText(this, "Patient " + patientName + " assigned to doctor successfully", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Failed to assign patient to doctor", Toast.LENGTH_SHORT).show();
+        }
     }
     private void populateDoctorSpinner() {
         // Fetch doctors' data from the database
@@ -264,21 +296,29 @@ public class Nurse extends AppCompatActivity {
         patientSpinner.setAdapter(patientAdapter);
     }
 
-
-    // Other initialization or operations as needed
-
-
-
-    // Other methods and functionalities as needed
     public void onAssignButtonClickBook(View view) {
-
         int doctorId = getSelectedDoctorId();
         int patientId = getSelectedPatientId();
         String date = getDate();
         String time = getTime();
 
-        // Assign the patient to the doctor
-        database.bookAppointment(doctorId,patientId,date,time);
+        String patientName = getSelectedPatientName();
+
+        long result = database.bookAppointment(doctorId, patientId, date, time, patientName);
+
+        if (result != -1) {
+            Toast.makeText(this, "Appointment booked successfully for patient " + patientName, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Failed to book appointment", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // Helper method to get the selected patient's name
+    private String getSelectedPatientName() {
+        if (patientSpinner.getSelectedItem() != null) {
+            return patientSpinner.getSelectedItem().toString().split(":")[1].trim();
+        }
+        return "";
     }
 
     private String  getTime() {

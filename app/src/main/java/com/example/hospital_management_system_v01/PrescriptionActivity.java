@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
-public class PrescriptionActivity extends AppCompatActivity {
+public class PrescriptionActivity extends BaseActivity {
 
     private Database myDB;
     private Spinner patientSpinner, medicineSpinner;
