@@ -303,10 +303,6 @@ public class Admin extends BaseActivity {
         specificUserBuilder.create().show();
     }
 
-
-
-
-
     private void editUser() {
         AlertDialog.Builder selectUserBuilder = new AlertDialog.Builder(this);
         selectUserBuilder.setTitle("Select User Type");
