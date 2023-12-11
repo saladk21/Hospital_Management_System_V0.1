@@ -6,12 +6,25 @@
     android:layout_height="match_parent"
     android:backgroundTint="#4F709C">
 
+    <TextView
+        android:id="@+id/bannerTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#4F709C"
+        android:gravity="center"
+        android:text="Login Page - Hospital Management System"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/Login"
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="90dp"
-        android:layout_marginTop="200dp"
         android:layout_marginEnd="91dp"
         android:backgroundTint="#4F709C"
         android:text="Login"
@@ -19,7 +32,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/Password"
+        app:layout_constraintVertical_bias="0.214" />
 
     <EditText
         android:id="@+id/Password"
@@ -28,6 +42,7 @@
         android:layout_marginTop="10dp"
         android:autofillHints="Password"
         android:hint="Password"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Username" />
@@ -37,13 +52,14 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="104dp"
         android:layout_marginEnd="50dp"
         android:autofillHints="Username"
         android:backgroundTint="#00BCD4"
         android:hint="Username"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.475"
+        app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/bannerTextView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

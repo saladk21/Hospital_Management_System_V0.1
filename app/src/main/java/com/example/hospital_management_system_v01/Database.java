@@ -133,8 +133,6 @@ public class Database extends SQLiteOpenHelper {
                         DOCTOR_TABLE_NAME + "(" + DOCTOR_COLUMN_ID + "), " +
                         "FOREIGN KEY(" + APPOINTMENT_COLUMN_PATIENT_ID + ") REFERENCES " +
                         PATIENT_TABLE_NAME + "(" + PATIENT_COLUMN_ID + ")");
-
-
     }
 
     @Override
@@ -249,10 +247,8 @@ public class Database extends SQLiteOpenHelper {
         // Check if the update was successful
         return updatedRows > 0;
     }
-    // Inside the Database class
 
-    // Method to book an appointment
-    public long bookAppointment(int doctorId, int patientId, String date, String time) {
+    public long bookAppointment(int doctorId, int patientId, String date, String time, String patientName) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -260,6 +256,7 @@ public class Database extends SQLiteOpenHelper {
         values.put(APPOINTMENT_COLUMN_PATIENT_ID, patientId);
         values.put(APPOINTMENT_COLUMN_DATE, date);
         values.put(APPOINTMENT_COLUMN_TIME, time);
+        values.put(APPOINTMENT_COLUMN_PATIENT_NAME, patientName); // Add patientName to the ContentValues
 
         // Insert the appointment record
         return db.insert(APPOINTMENT_TABLE_NAME, null, values);
@@ -267,25 +264,9 @@ public class Database extends SQLiteOpenHelper {
 
 
 
-
-    // Method to retrieve all rows from a specific table
     public Cursor getAllRows(String tableName) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.query(tableName, null, null, null, null, null, null);
-    }
-
-    //aap
-    public Cursor getAllAppointments() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        return db.query(
-                APPOINTMENT_TABLE_NAME,
-                new String[]{APPOINTMENT_COLUMN_DATE, APPOINTMENT_COLUMN_TIME},
-                null,
-                null,
-                null,
-                null,
-                null
-        );
     }
 
     // Helper method to get the primary key column for a table
@@ -306,7 +287,6 @@ public class Database extends SQLiteOpenHelper {
         }
     }
 
-    // Universal method to check login credentials for any user type
     public Cursor checkLogin(String tableName, String username, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -356,20 +336,57 @@ public class Database extends SQLiteOpenHelper {
         db.update(PATIENT_TABLE_NAME, values, selection, selectionArgs);
     }
 
-    // Universal method to change the severity of a patient's illness
-    public void changeSeverity(long patientId, String newSeverity) {
-        SQLiteDatabase db = this.getWritableDatabase();
+    public int getPatientIdByUsername(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int patientId = -1; // Default value if not found
 
-        ContentValues values = new ContentValues();
-        values.put(PATIENT_COLUMN_STATUS, newSeverity);
+        // Define the query
+        String query = "SELECT " + PATIENT_COLUMN_ID +
+                " FROM " + PATIENT_TABLE_NAME +
+                " WHERE " + COLUMN_NAME + " = ?";
 
-        String selection = " _id = ?";
-        String[] selectionArgs = {String.valueOf(patientId)};
+        // Execute the query
+        Cursor cursor = db.rawQuery(query, new String[]{username});
 
-        db.update(PATIENT_TABLE_NAME, values, selection, selectionArgs);
+        // Check if the cursor has data
+        if (cursor.moveToFirst()) {
+            int patientIdColumnIndex = cursor.getColumnIndex(PATIENT_COLUMN_ID);
+            if (patientIdColumnIndex != -1) {
+                patientId = cursor.getInt(patientIdColumnIndex);
+            }
+        }
+
+
+        cursor.close();
+        db.close();
+
+        return patientId;
     }
 
-// ... (Existing code)
+    @SuppressLint("Range")
+    public int getDoctorIdByUsername(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int doctorId = -1;
 
+        String[] projection = {DOCTOR_COLUMN_ID};
+        String selection = COLUMN_NAME + " = ?";
+        String[] selectionArgs = {username};
+
+        Cursor cursor = db.query(DOCTOR_TABLE_NAME, projection, selection, selectionArgs, null, null, null);
+
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                doctorId = cursor.getInt(cursor.getColumnIndex(DOCTOR_COLUMN_ID));
+            }
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+
+        return doctorId;
+    }
 
 }
+
+
